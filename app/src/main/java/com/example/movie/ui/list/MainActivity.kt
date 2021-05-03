@@ -17,6 +17,5 @@ class MainActivity : AppCompatActivity() {
         binding.tabs.setupWithViewPager(binding.viewPager)
 
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.elevation = 0f
     }
 }

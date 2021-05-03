@@ -22,10 +22,7 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        app:tabIndicatorColor="@android:color/white"
-        app:tabTextColor="@android:color/white" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
