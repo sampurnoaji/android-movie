@@ -1,5 +1,6 @@
 package com.example.movie.ui.list.movie
 
+import com.example.movie.data.Movie
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -19,5 +20,17 @@ class MoviesViewModelTest {
         val movies = vm.getMovies()
         assertNotNull(movies)
         assertEquals(10, movies.size)
+    }
+
+    @Test
+    fun getMoviesReturnEmpty() {
+        val movies = emptyList<Movie>()
+        assertEquals(emptyList<Movie>(), movies)
+    }
+
+    @Test
+    fun getMoviesErrorReturnNull() {
+        val movies = null
+        assertEquals(null, movies)
     }
 }
