@@ -39,6 +39,8 @@ class MainActivityTest {
 
     @Test
     fun loadDetailMovie() {
+        Espresso.onView(withId(R.id.tabs))
+            .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(withId(R.id.rvMovies)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
