@@ -27,7 +27,7 @@ class ShowsFragment : Fragment(), ShowListAdapter.ShowItemListener {
         super.onViewCreated(view, savedInstanceState)
 
         val showListAdapter = ShowListAdapter(vm.getShows(), this)
-        with(binding.rvMovies) {
+        with(binding.rvShows) {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
             adapter = showListAdapter
