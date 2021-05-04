@@ -41,7 +41,7 @@ class ShowListAdapter(
             binding.listDate.text = show.releaseDate.formatDate()
             binding.listOverview.text = show.overview
 
-            binding.root.setOnClickListener { listener.onShowClicked(show.id) }
+            binding.container.setOnClickListener { listener.onShowClicked(show.id) }
         }
     }
 

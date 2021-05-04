@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movie.databinding.FragmentShowsBinding
+import com.example.movie.ui.detail.show.ShowDetailActivity
 
 class ShowsFragment : Fragment(), ShowListAdapter.ShowItemListener {
 
@@ -34,6 +35,6 @@ class ShowsFragment : Fragment(), ShowListAdapter.ShowItemListener {
     }
 
     override fun onShowClicked(id: Int) {
-
+        ShowDetailActivity.start(requireActivity(), id)
     }
 }
