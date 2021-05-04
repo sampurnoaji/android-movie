@@ -41,7 +41,7 @@ class MovieListAdapter(
             binding.listDate.text = movie.releaseDate.formatDate()
             binding.listOverview.text = movie.overview
 
-            binding.root.setOnClickListener { listener.onMovieClicked(movie.id) }
+            binding.container.setOnClickListener { listener.onMovieClicked(movie.id) }
         }
     }
 

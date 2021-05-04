@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movie.R
 import com.example.movie.databinding.FragmentMoviesBinding
+import com.example.movie.ui.detail.movie.MovieDetailActivity
 
 class MoviesFragment : Fragment(), MovieListAdapter.MovieItemListener {
 
@@ -35,6 +36,6 @@ class MoviesFragment : Fragment(), MovieListAdapter.MovieItemListener {
     }
 
     override fun onMovieClicked(id: Int) {
-
+        MovieDetailActivity.start(requireActivity(), id)
     }
 }
