@@ -2,10 +2,9 @@ package com.example.movie.ui.detail.movie
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.example.movie.R
+import androidx.appcompat.app.AppCompatActivity
 import com.example.movie.data.Movie
 import com.example.movie.databinding.ActivityMovieDetailBinding
 import com.example.movie.utils.formatDate
@@ -43,12 +42,14 @@ class MovieDetailActivity : AppCompatActivity() {
     }
 
     private fun populateMovie(movie: Movie) {
-        binding.detailPoster.loadPoster(movie.posterUrl)
-        binding.detailTitle.text = movie.title
-        binding.detailDate.text = movie.releaseDate.formatDate()
-        binding.detailLanguage.text = movie.language
-        binding.detailVote.text = movie.voteAverage.toString()
-        binding.detailPopularity.text = movie.popularity.toString()
-        binding.detailOverview.text = movie.overview
+        with(binding) {
+            detailPoster.loadPoster(movie.posterUrl)
+            detailTitle.text = movie.title
+            detailDate.text = movie.releaseDate.formatDate()
+            detailLanguage.text = movie.language
+            detailVote.text = movie.voteAverage.toString()
+            detailPopularity.text = movie.popularity.toString()
+            detailOverview.text = movie.overview
+        }
     }
 }

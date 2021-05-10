@@ -42,12 +42,14 @@ class ShowDetailActivity : AppCompatActivity() {
     }
 
     private fun populateShow(show: Show) {
-        binding.detailPoster.loadPoster(show.posterUrl)
-        binding.detailTitle.text = show.title
-        binding.detailDate.text = show.releaseDate.formatDate()
-        binding.detailLanguage.text = show.language
-        binding.detailVote.text = show.voteAverage.toString()
-        binding.detailPopularity.text = show.popularity.toString()
-        binding.detailOverview.text = show.overview
+        with(binding) {
+            detailPoster.loadPoster(show.posterUrl)
+            detailTitle.text = show.title
+            detailDate.text = show.releaseDate.formatDate()
+            detailLanguage.text = show.language
+            detailVote.text = show.voteAverage.toString()
+            detailPopularity.text = show.popularity.toString()
+            detailOverview.text = show.overview
+        }
     }
 }

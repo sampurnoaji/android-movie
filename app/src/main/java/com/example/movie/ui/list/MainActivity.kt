@@ -1,8 +1,7 @@
 package com.example.movie.ui.list
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.movie.R
+import androidx.appcompat.app.AppCompatActivity
 import com.example.movie.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
