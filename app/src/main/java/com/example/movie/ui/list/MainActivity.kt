@@ -1,14 +1,20 @@
 package com.example.movie.ui.list
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.movie.R
+import androidx.appcompat.app.AppCompatActivity
+import com.example.movie.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+        binding.viewPager.adapter = sectionsPagerAdapter
+        binding.tabs.setupWithViewPager(binding.viewPager)
+
+        setSupportActionBar(binding.toolbar)
     }
 }

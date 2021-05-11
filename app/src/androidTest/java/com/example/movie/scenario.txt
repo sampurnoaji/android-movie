@@ -1,0 +1,29 @@
+Menampilkan data movie
+- Memastikan tab dalam keadaan tampil.
+- Memastikan rvMovies dalam keadaan tampil.
+- Gulir rvMovies ke posisi data terakhir.
+Menampilkan data detail movie
+- Memastikan tab dalam keadaan tampil.
+- Memberi tindakan klik pada data pertama di rvMovies.
+- Memastikan TextView untuk title tampil sesuai dengan yang diharapkan.
+- Memastikan TextView untuk release date tampil sesuai dengan yang diharapkan.
+- Memastikan TextView untuk language tampil sesuai dengan yang diharapkan.
+- Memastikan TextView untuk vote average tampil sesuai dengan yang diharapkan.
+- Memastikan TextView untuk popularity tampil sesuai dengan yang diharapkan.
+- Memastikan TextView untuk overview tampil sesuai dengan yang diharapkan.
+
+Menampilkan data tv show
+- Memastikan tab dalam keadaan tampil.
+- Memberi tindakan klik pada tab TV Show
+- Memastikan rvMovies dalam keadaan tampil.
+- Gulir rvMovies ke posisi data terakhir.
+Menampilkan data detail tv show
+- Memastikan tab dalam keadaan tampil.
+- Memberi tindakan klik pada tab TV Show
+- Memberi tindakan klik pada data pertama di rvShows.
+- Memastikan TextView untuk title tampil sesuai dengan yang diharapkan.
+- Memastikan TextView untuk release date tampil sesuai dengan yang diharapkan.
+- Memastikan TextView untuk language tampil sesuai dengan yang diharapkan.
+- Memastikan TextView untuk vote average tampil sesuai dengan yang diharapkan.
+- Memastikan TextView untuk popularity tampil sesuai dengan yang diharapkan.
+- Memastikan TextView untuk overview tampil sesuai dengan yang diharapkan.
