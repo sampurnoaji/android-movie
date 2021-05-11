@@ -7,6 +7,10 @@ buildscript {
         coreVersion = '1.3.2'
         constraintLayoutVersion = '2.0.4'
         navigationVersion = '2.3.5'
+        koinVersion = '2.2.2'
+        retrofitVersion = '2.9.0'
+        loggingInterceptorVersion = '4.9.0'
+        moshiVersion = '2.9.0'
 
         junitVersion = '4.13.1'
         junitExtversion = '1.1.2'
@@ -20,10 +24,10 @@ buildscript {
     }
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.2"
+        classpath 'com.android.tools.build:gradle:4.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -34,7 +38,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 

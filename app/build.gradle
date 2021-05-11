@@ -15,6 +15,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'BASE_URL', MOVIEDB_BASE_URL
+        buildConfigField 'String', 'API_KEY', MOVIEDB_API_KEY
     }
 
     buildTypes {
@@ -36,9 +39,13 @@ android {
 }
 
 dependencies {
-//kotlin
+    //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$coreVersion"
+
+    //di
+    implementation "io.insert-koin:koin-android:$koinVersion"
+    implementation "io.insert-koin:koin-android-viewmodel:$koinVersion"
 
     //ui
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
@@ -49,6 +56,11 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    //network
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$loggingInterceptorVersion"
+    implementation "com.squareup.retrofit2:converter-moshi:$moshiVersion"
 
     //testing
     testImplementation "junit:junit:$junitVersion"

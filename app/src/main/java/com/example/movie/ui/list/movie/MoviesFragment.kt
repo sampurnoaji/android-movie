@@ -5,17 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movie.databinding.FragmentMoviesBinding
 import com.example.movie.ui.detail.movie.MovieDetailActivity
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MoviesFragment : Fragment(), MovieListAdapter.MovieItemListener {
 
     private lateinit var binding: FragmentMoviesBinding
-    private val vm: MoviesViewModel by viewModels()
+    private val vm: MoviesViewModel by viewModel()
 
-    override fun onCreateView(
+    override
+
+    fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
