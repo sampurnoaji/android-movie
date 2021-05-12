@@ -1,6 +1,6 @@
 package com.example.movie.ui.list.movie
 
-import com.example.movie.data.Movie
+import com.example.movie.domain.Movie
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before

@@ -1,7 +1,7 @@
 package com.example.movie.ui.list.show
 
-import com.example.movie.data.Movie
 import com.example.movie.data.Show
+import com.example.movie.domain.Movie
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before

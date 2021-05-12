@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.movie.data.Movie
 import com.example.movie.databinding.ActivityMovieDetailBinding
+import com.example.movie.domain.Movie
 import com.example.movie.utils.formatDate
 import com.example.movie.utils.loadPoster
 
@@ -43,10 +43,10 @@ class MovieDetailActivity : AppCompatActivity() {
 
     private fun populateMovie(movie: Movie) {
         with(binding) {
-            detailPoster.loadPoster(movie.posterUrl)
+            detailPoster.loadPoster(movie.posterPath)
             detailTitle.text = movie.title
             detailDate.text = movie.releaseDate.formatDate()
-            detailLanguage.text = movie.language
+            detailLanguage.text = movie.originalLanguage
             detailVote.text = movie.voteAverage.toString()
             detailPopularity.text = movie.popularity.toString()
             detailOverview.text = movie.overview

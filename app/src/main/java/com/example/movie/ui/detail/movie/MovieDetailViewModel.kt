@@ -1,7 +1,7 @@
 package com.example.movie.ui.detail.movie
 
 import androidx.lifecycle.ViewModel
-import com.example.movie.data.Movie
+import com.example.movie.domain.Movie
 import com.example.movie.utils.DataDummy
 
 class MovieDetailViewModel : ViewModel() {
