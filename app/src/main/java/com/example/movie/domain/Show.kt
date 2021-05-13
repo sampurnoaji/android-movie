@@ -1,4 +1,4 @@
-package com.example.movie.data
+package com.example.movie.domain
 
 data class Show(
     val backdropPath: String,

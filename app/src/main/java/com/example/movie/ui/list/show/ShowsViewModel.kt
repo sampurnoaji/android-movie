@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movie.data.Show
-import com.example.movie.data.source.MovieRepository
+import com.example.movie.domain.MovieRepository
+import com.example.movie.domain.Show
 import com.example.movie.vo.LoadResult
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

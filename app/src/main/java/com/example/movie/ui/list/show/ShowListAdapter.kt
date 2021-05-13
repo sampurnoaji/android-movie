@@ -3,8 +3,8 @@ package com.example.movie.ui.list.show
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.movie.data.Show
 import com.example.movie.databinding.ItemsShowBinding
+import com.example.movie.domain.Show
 import com.example.movie.utils.formatDate
 import com.example.movie.utils.loadPoster
 

@@ -1,7 +1,7 @@
 package com.example.movie.data.mapper
 
-import com.example.movie.data.Show
 import com.example.movie.data.source.remote.response.ShowsDto
+import com.example.movie.domain.Show
 
 class ShowsMapper {
     operator fun invoke(showsDto: ShowsDto): List<Show> {

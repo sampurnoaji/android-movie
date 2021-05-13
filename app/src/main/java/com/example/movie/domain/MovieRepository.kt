@@ -1,7 +1,5 @@
-package com.example.movie.data.source
+package com.example.movie.domain
 
-import com.example.movie.data.Show
-import com.example.movie.domain.Movie
 import com.example.movie.vo.LoadResult
 import kotlinx.coroutines.flow.Flow
 

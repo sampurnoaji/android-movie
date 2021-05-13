@@ -1,10 +1,11 @@
 package com.example.movie.data.source
 
-import com.example.movie.data.Show
 import com.example.movie.data.mapper.MoviesMapper
 import com.example.movie.data.mapper.ShowsMapper
 import com.example.movie.data.source.remote.RemoteDataSource
 import com.example.movie.domain.Movie
+import com.example.movie.domain.MovieRepository
+import com.example.movie.domain.Show
 import com.example.movie.vo.LoadResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.movie.data.Show
 import com.example.movie.databinding.ActivityShowDetailBinding
+import com.example.movie.domain.Show
 import com.example.movie.utils.formatDate
 import com.example.movie.utils.loadPoster
 
