@@ -3,17 +3,21 @@ package com.example.movie.ui.detail.show
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.movie.databinding.ActivityShowDetailBinding
-import com.example.movie.domain.Show
+import com.example.movie.domain.ShowDetail
 import com.example.movie.utils.formatDate
+import com.example.movie.utils.gone
 import com.example.movie.utils.loadPoster
+import com.example.movie.utils.visible
+import com.example.movie.vo.LoadResult
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class ShowDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityShowDetailBinding
-    private val vm: ShowDetailViewModel by viewModels()
+    private val vm: ShowDetailViewModel by viewModel()
 
     companion object {
         private const val INTENT_KEY_SHOW_ID = "showId"
@@ -33,15 +37,28 @@ class ShowDetailActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
-        
+
         val showId = intent.extras?.getInt(INTENT_KEY_SHOW_ID)
-        showId?.let { 
+        showId?.let {
             vm.setSelectedShow(it)
-            populateShow(vm.getShow())
+            vm.getShowDetail()
+        }
+        vm.showDetailResult.observe(this) {
+            when (it) {
+                is LoadResult.Loading -> binding.progressBar.visible()
+                is LoadResult.Success -> {
+                    binding.progressBar.gone()
+                    populateShow(it.data)
+                }
+                is LoadResult.Error -> {
+                    binding.progressBar.gone()
+                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
-    private fun populateShow(show: Show) {
+    private fun populateShow(show: ShowDetail) {
         with(binding) {
             detailPoster.loadPoster(show.posterPath)
             detailTitle.text = show.name
