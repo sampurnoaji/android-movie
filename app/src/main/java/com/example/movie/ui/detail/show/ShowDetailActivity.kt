@@ -43,10 +43,10 @@ class ShowDetailActivity : AppCompatActivity() {
 
     private fun populateShow(show: Show) {
         with(binding) {
-            detailPoster.loadPoster(show.posterUrl)
-            detailTitle.text = show.title
-            detailDate.text = show.releaseDate.formatDate()
-            detailLanguage.text = show.language
+            detailPoster.loadPoster(show.posterPath)
+            detailTitle.text = show.name
+            detailDate.text = show.firstAirDate.formatDate()
+            detailLanguage.text = show.originalLanguage
             detailVote.text = show.voteAverage.toString()
             detailPopularity.text = show.popularity.toString()
             detailOverview.text = show.overview

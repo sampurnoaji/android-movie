@@ -4,8 +4,8 @@ import com.example.movie.data.source.remote.response.MoviesDto
 import com.example.movie.domain.Movie
 
 class MoviesMapper {
-    operator fun invoke(moviesDto: MoviesDto?): List<Movie> {
-        return moviesDto?.results?.map {
+    operator fun invoke(moviesDto: MoviesDto): List<Movie> {
+        return moviesDto.results?.map {
             Movie(
                 adult = it?.adult ?: false,
                 backdropPath = it?.backdropPath.orEmpty(),

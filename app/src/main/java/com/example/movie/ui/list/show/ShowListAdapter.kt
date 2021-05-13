@@ -36,9 +36,9 @@ class ShowListAdapter(
         }
 
         fun bind(show: Show, listener: ShowItemListener) {
-            binding.listPoster.loadPoster(show.posterUrl)
-            binding.listTitle.text = show.title
-            binding.listDate.text = show.releaseDate.formatDate()
+            binding.listPoster.loadPoster(show.posterPath)
+            binding.listTitle.text = show.name
+            binding.listDate.text = show.firstAirDate.formatDate()
             binding.listOverview.text = show.overview
 
             binding.container.setOnClickListener { listener.onShowClicked(show.id) }
