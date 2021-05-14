@@ -1,37 +1,36 @@
 package com.example.movie.data.source
 
-import com.example.movie.BuildConfig
 import com.example.movie.data.mapper.MovieDetailMapper
 import com.example.movie.data.mapper.MoviesMapper
 import com.example.movie.data.mapper.ShowDetailMapper
 import com.example.movie.data.mapper.ShowsMapper
-import com.example.movie.data.service.ApiService
 import com.example.movie.data.source.remote.RemoteDataSource
-import com.example.movie.domain.MovieRepository
 import com.example.movie.utils.DummyData
-import io.mockk.mockk
+import com.example.movie.utils.MainCoroutineRule
+import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertNotNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.stub
-import org.mockito.kotlin.verify
+import org.mockito.Mockito
+import org.mockito.kotlin.mock
 
 @ExperimentalCoroutinesApi
 class MovieRepositoryImplTest {
 
-    val apiService = mockk<ApiService>()
-    val remoteDataSource = mockk<RemoteDataSource>()
-    val moviesMapper = mockk<MoviesMapper>()
-    val movieDetailMapper = mockk<MovieDetailMapper>()
-    val showsMapper = mockk<ShowsMapper>()
-    val showDetailMapper = mockk<ShowDetailMapper>()
+    @get:Rule
+    var mainCoroutineRule = MainCoroutineRule()
 
-    private lateinit var repository: MovieRepository
+    val remoteDataSource = mock<RemoteDataSource>()
+    val moviesMapper = mock<MoviesMapper>()
+    val movieDetailMapper = mock<MovieDetailMapper>()
+    val showsMapper = mock<ShowsMapper>()
+    val showDetailMapper = mock<ShowDetailMapper>()
+
+    private lateinit var repository: MovieRepositoryImpl
 
     @Before
     fun setUp() {
@@ -40,16 +39,13 @@ class MovieRepositoryImplTest {
 
     @Test
     fun getMovies() = runBlocking {
-        apiService.stub {
-            onBlocking { getMovies(BuildConfig.API_KEY) } doReturn DummyData.moviesDto
-        }
-
-        val flow = repository.getMovies()
-
-        flow.collect {
-            verify(repository.getMovies())
+        mainCoroutineRule.testDispatcher.runBlockingTest {
+            val dummy = DummyData.moviesDto
+            Mockito.`when`(remoteDataSource.getMovies()).thenReturn(dummy)
+            repository.getMovies()
+            Mockito.verify(remoteDataSource).getMovies()
             assertNotNull(repository.getMovies())
-            assertEquals(1, DummyData.moviesDto.results?.size)
+            assertEquals(1, dummy.results?.size)
         }
     }
 }

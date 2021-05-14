@@ -14,7 +14,6 @@ import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.kotlin.mock
 
@@ -27,7 +26,6 @@ class MoviesViewModelTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    @Mock
     private var repository: MovieRepository = mock()
 
     private lateinit var vm: MoviesViewModel
@@ -48,11 +46,9 @@ class MoviesViewModelTest {
             vm.getMovies()
             Mockito.verify(repository).getMovies()
             vm.movieResult.observerTest {
-                when (it) {
-                    is LoadResult.Success -> {
-                        assertNotNull(it.data)
-                        assertEquals(1, it.data.size)
-                    }
+                if (it is LoadResult.Success) {
+                    assertNotNull(it.data)
+                    assertEquals(1, it.data.size)
                 }
             }
         }
