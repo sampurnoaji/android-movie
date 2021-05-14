@@ -1,15 +1,25 @@
 package com.example.movie.ui.list
 
+import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.rule.ActivityTestRule
 import com.example.movie.R
+import com.example.movie.ui.detail.movie.MovieDetailActivity
+import com.example.movie.ui.detail.show.ShowDetailActivity
 import com.example.movie.utils.DataDummy
+import com.example.movie.utils.DummyData
+import com.example.movie.utils.EspressoIdlingResource
 import com.example.movie.utils.formatDate
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -20,6 +30,23 @@ class MainActivityTest {
 
     @get:Rule
     var activityRule = ActivityScenarioRule(MainActivity::class.java)
+
+    @get:Rule
+    val activityRuleMovieDetail = ActivityTestRule(MovieDetailActivity::class.java, false, false)
+
+    @get:Rule
+    val activityRuleShowDetail = ActivityTestRule(ShowDetailActivity::class.java, false, false)
+
+    @Before
+    fun setUp() {
+        ActivityScenario.launch(MainActivity::class.java)
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.idlingResource)
+    }
+
+    @After
+    fun tearDown() {
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.idlingResource)
+    }
 
     @Test
     fun loadMovies() {
@@ -35,36 +62,34 @@ class MainActivityTest {
     fun loadDetailMovie() {
         Espresso.onView(withId(R.id.tabs))
             .check(ViewAssertions.matches(isDisplayed()))
-        Espresso.onView(withId(R.id.rvMovies)).perform(
-            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                0,
-                ViewActions.click()
-            )
-        )
+
+        val intent = Intent().putExtra(MovieDetailActivity.INTENT_KEY_MOVIE_ID, DummyData.movieDetail.id)
+        activityRuleMovieDetail.launchActivity(intent)
+
         Espresso.onView(withId(R.id.detail_title))
             .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(withId(R.id.detail_title))
-            .check(ViewAssertions.matches(withText(dummyMovies[0].title)))
+            .check(ViewAssertions.matches(withText("Tom Clancy's Without Remorse")))
         Espresso.onView(withId(R.id.detail_date))
             .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(withId(R.id.detail_date))
-            .check(ViewAssertions.matches(withText(dummyMovies[0].releaseDate.formatDate())))
+            .check(ViewAssertions.matches(withText("2021-04-29".formatDate())))
         Espresso.onView(withId(R.id.detail_language))
             .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(withId(R.id.detail_language))
-            .check(ViewAssertions.matches(withText(dummyMovies[0].language)))
+            .check(ViewAssertions.matches(withText("en")))
         Espresso.onView(withId(R.id.detail_vote))
             .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(withId(R.id.detail_vote))
-            .check(ViewAssertions.matches(withText(dummyMovies[0].voteAverage.toString())))
+            .check(ViewAssertions.matches(withText("7.3")))
         Espresso.onView(withId(R.id.detail_popularity))
             .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(withId(R.id.detail_popularity))
-            .check(ViewAssertions.matches(withText(dummyMovies[0].popularity.toString())))
+            .check(ViewAssertions.matches(withText("8041.952")))
         Espresso.onView(withId(R.id.detail_overview))
             .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(withId(R.id.detail_overview))
-            .check(ViewAssertions.matches(withText(dummyMovies[0].overview)))
+            .check(ViewAssertions.matches(withText("An elite Navy SEAL uncovers an international conspiracy while seeking justice for the murder of his pregnant wife.")))
     }
 
     @Test
@@ -83,35 +108,33 @@ class MainActivityTest {
         Espresso.onView(withId(R.id.tabs))
             .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(withText("TV SHOW")).perform(ViewActions.click())
-        Espresso.onView(withId(R.id.rvShows)).perform(
-            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                0,
-                ViewActions.click()
-            )
-        )
+
+        val intent = Intent().putExtra(ShowDetailActivity.INTENT_KEY_SHOW_ID, DummyData.showDetail.id)
+        activityRuleShowDetail.launchActivity(intent)
+
         Espresso.onView(withId(R.id.detail_title))
             .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(withId(R.id.detail_title))
-            .check(ViewAssertions.matches(withText(dummyShows[9].title)))
+            .check(ViewAssertions.matches(withText("The Falcon and the Winter Soldier")))
         Espresso.onView(withId(R.id.detail_date))
             .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(withId(R.id.detail_date))
-            .check(ViewAssertions.matches(withText(dummyShows[9].releaseDate.formatDate())))
+            .check(ViewAssertions.matches(withText("2021-03-19".formatDate())))
         Espresso.onView(withId(R.id.detail_language))
             .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(withId(R.id.detail_language))
-            .check(ViewAssertions.matches(withText(dummyShows[9].language)))
+            .check(ViewAssertions.matches(withText("en")))
         Espresso.onView(withId(R.id.detail_vote))
             .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(withId(R.id.detail_vote))
-            .check(ViewAssertions.matches(withText(dummyShows[9].voteAverage.toString())))
+            .check(ViewAssertions.matches(withText("7.9")))
         Espresso.onView(withId(R.id.detail_popularity))
             .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(withId(R.id.detail_popularity))
-            .check(ViewAssertions.matches(withText(dummyShows[9].popularity.toString())))
+            .check(ViewAssertions.matches(withText("1092.677")))
         Espresso.onView(withId(R.id.detail_overview))
             .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(withId(R.id.detail_overview))
-            .check(ViewAssertions.matches(withText(dummyShows[9].overview)))
+            .check(ViewAssertions.matches(withText("Following the events of “Avengers: Endgame”, the Falcon, Sam Wilson and the Winter Soldier, Bucky Barnes team up in a global adventure that tests their abilities, and their patience.")))
     }
 }

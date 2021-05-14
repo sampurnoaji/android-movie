@@ -20,7 +20,7 @@ class MovieDetailActivity : AppCompatActivity() {
     private val vm: MovieDetailViewModel by viewModel()
 
     companion object {
-        private const val INTENT_KEY_MOVIE_ID = "movieId"
+        const val INTENT_KEY_MOVIE_ID = "movieId"
 
         @JvmStatic
         fun start(context: Context, movieId: Int) {

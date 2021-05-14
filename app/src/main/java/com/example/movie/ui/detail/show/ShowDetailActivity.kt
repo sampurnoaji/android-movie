@@ -20,7 +20,7 @@ class ShowDetailActivity : AppCompatActivity() {
     private val vm: ShowDetailViewModel by viewModel()
 
     companion object {
-        private const val INTENT_KEY_SHOW_ID = "showId"
+        const val INTENT_KEY_SHOW_ID = "showId"
 
         @JvmStatic
         fun start(context: Context, showId: Int) {
