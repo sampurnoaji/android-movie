@@ -1,6 +1,9 @@
 package com.example.movie.utils
 
+import com.example.movie.data.source.remote.response.MovieDetailDto
 import com.example.movie.data.source.remote.response.MoviesDto
+import com.example.movie.data.source.remote.response.ShowDetailDto
+import com.example.movie.data.source.remote.response.ShowsDto
 import com.example.movie.domain.Movie
 import com.example.movie.domain.MovieDetail
 import com.example.movie.domain.Show
@@ -14,6 +17,8 @@ object DummyData {
             )
         )
     )
+
+    val movieDetailDto = MovieDetailDto(id = 567189)
 
     val movies = listOf(
         Movie(
@@ -45,6 +50,16 @@ object DummyData {
         voteAverage = 0f,
         voteCount = 0
     )
+
+    val showsDto = ShowsDto(
+        results = listOf(
+            ShowsDto.Result(
+                id = 1
+            )
+        )
+    )
+
+    val showDetailDto = ShowDetailDto(id = 88396)
 
     val shows = listOf(
         Show(

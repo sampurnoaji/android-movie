@@ -10,7 +10,6 @@ import com.example.movie.utils.MainCoroutineRule
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
@@ -38,14 +37,52 @@ class MovieRepositoryImplTest {
     }
 
     @Test
-    fun getMovies() = runBlocking {
+    fun getMovies() {
         mainCoroutineRule.testDispatcher.runBlockingTest {
             val dummy = DummyData.moviesDto
             Mockito.`when`(remoteDataSource.getMovies()).thenReturn(dummy)
-            repository.getMovies()
+            val response = remoteDataSource.getMovies()
             Mockito.verify(remoteDataSource).getMovies()
             assertNotNull(repository.getMovies())
-            assertEquals(1, dummy.results?.size)
+            assertEquals(response.results?.size, dummy.results?.size)
+        }
+    }
+
+    @Test
+    fun getShows() {
+        mainCoroutineRule.testDispatcher.runBlockingTest {
+            val dummy = DummyData.showsDto
+            Mockito.`when`(remoteDataSource.getShows()).thenReturn(dummy)
+            val response = remoteDataSource.getShows()
+            Mockito.verify(remoteDataSource).getShows()
+            assertNotNull(repository.getShows())
+            assertEquals(response.results?.size, dummy.results?.size)
+        }
+    }
+
+    @Test
+    fun getMovieDetail() {
+        mainCoroutineRule.testDispatcher.runBlockingTest {
+            val dummy = DummyData.movieDetailDto
+            val id = DummyData.movieDetailDto.id ?: 0
+            Mockito.`when`(remoteDataSource.getMovieDetail(id)).thenReturn(dummy)
+            val response = remoteDataSource.getMovieDetail(id)
+            Mockito.verify(remoteDataSource).getMovieDetail(id)
+            assertNotNull(repository.getMovieDetail(id))
+            assertEquals(response.id, dummy.id)
+        }
+    }
+
+    @Test
+    fun getShowDetail() {
+        mainCoroutineRule.testDispatcher.runBlockingTest {
+            val dummy = DummyData.showDetailDto
+            val id = DummyData.showDetailDto.id ?: 0
+            Mockito.`when`(remoteDataSource.getShowDetail(id)).thenReturn(dummy)
+            val response = remoteDataSource.getShowDetail(id)
+            Mockito.verify(remoteDataSource).getShowDetail(id)
+            assertNotNull(repository.getShowDetail(id))
+            assertEquals(response.id, dummy.id)
         }
     }
 }
