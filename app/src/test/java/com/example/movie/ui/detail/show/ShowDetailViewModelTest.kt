@@ -1,34 +1,65 @@
 package com.example.movie.ui.detail.show
 
-import com.example.movie.utils.DataDummy
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.example.movie.domain.MovieRepository
+import com.example.movie.utils.DummyData
+import com.example.movie.utils.MainCoroutineRule
+import com.example.movie.utils.observerTest
+import com.example.movie.vo.LoadResult
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.kotlin.mock
 
+@ExperimentalCoroutinesApi
 class ShowDetailViewModelTest {
 
-    private lateinit var vm: ShowDetailViewModel
-    private val dummyShow = DataDummy.generateShows()[0]
+    private val dummyShow = DummyData.showDetail
     private val showId = dummyShow.id
+
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    var mainCoroutineRule = MainCoroutineRule()
+
+    @Mock
+    private var repository: MovieRepository = mock()
+
+    private lateinit var vm: ShowDetailViewModel
 
     @Before
     fun setUp() {
-        vm = ShowDetailViewModel()
+        vm = ShowDetailViewModel(repository)
         vm.setSelectedShow(showId)
     }
 
     @Test
     fun getShow() {
         vm.setSelectedShow(dummyShow.id)
-
-        val show = vm.getShow()
-        assertNotNull(show)
-        assertEquals(dummyShow.posterUrl, show.posterUrl)
-        assertEquals(dummyShow.title, show.title)
-        assertEquals(dummyShow.language, show.language)
-        assertEquals(dummyShow.releaseDate, show.releaseDate)
-        assertEquals(dummyShow.voteAverage, show.voteAverage)
-        assertEquals(dummyShow.popularity, show.popularity)
+        mainCoroutineRule.testDispatcher.runBlockingTest {
+            val dummyShow = flow {
+                emit(LoadResult.Loading)
+                emit(LoadResult.Success(dummyShow))
+            }
+            Mockito.`when`(repository.getShowDetail(showId)).thenReturn(dummyShow)
+            vm.getShowDetail()
+            Mockito.verify(repository).getShowDetail(showId)
+            vm.showDetailResult.observerTest {
+                when (it) {
+                    is LoadResult.Success -> {
+                        val show = it.data
+                        assertNotNull(show)
+                        assertEquals(this@ShowDetailViewModelTest.dummyShow, show)
+                    }
+                }
+            }
+        }
     }
 }
