@@ -3,8 +3,8 @@ package com.example.movie.ui.list.movie
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.movie.data.Movie
 import com.example.movie.databinding.ItemsMovieBinding
+import com.example.movie.domain.Movie
 import com.example.movie.utils.formatDate
 import com.example.movie.utils.loadPoster
 
@@ -36,7 +36,7 @@ class MovieListAdapter(
         }
 
         fun bind(movie: Movie, listener: MovieItemListener) {
-            binding.listPoster.loadPoster(movie.posterUrl)
+            binding.listPoster.loadPoster(movie.posterPath)
             binding.listTitle.text = movie.title
             binding.listDate.text = movie.releaseDate.formatDate()
             binding.listOverview.text = movie.overview

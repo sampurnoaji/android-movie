@@ -7,12 +7,21 @@ buildscript {
         coreVersion = '1.3.2'
         constraintLayoutVersion = '2.0.4'
         navigationVersion = '2.3.5'
+        koinVersion = '2.2.2'
+        retrofitVersion = '2.9.0'
+        loggingInterceptorVersion = '4.9.0'
+        moshiVersion = '2.9.0'
 
         junitVersion = '4.13.1'
         junitExtversion = '1.1.2'
         espressoVersion = '3.3.0'
         androidTestVersion = '1.3.0'
         androidXTestVersion = '1.2.0'
+        mockitoVersion = '3.10.0'
+        mockitoKotlinVersion = '3.2.0'
+        androidCoreTestVersion = '2.1.0'
+        coroutinesTestVersion = '1.3.2'
+        idleResourceVersion = '3.3.0'
 
         materialVersion = '1.3.0'
         recyclerViewVersion = '1.2.0'
@@ -20,10 +29,10 @@ buildscript {
     }
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.2"
+        classpath 'com.android.tools.build:gradle:4.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -34,7 +43,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
