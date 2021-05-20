@@ -1,24 +1,24 @@
 package com.example.movie.utils
 
-import com.example.movie.data.source.remote.response.MovieDetailDto
-import com.example.movie.data.source.remote.response.MoviesDto
-import com.example.movie.data.source.remote.response.ShowDetailDto
-import com.example.movie.data.source.remote.response.ShowsDto
-import com.example.movie.domain.Movie
-import com.example.movie.domain.MovieDetail
-import com.example.movie.domain.Show
-import com.example.movie.domain.ShowDetail
+import com.example.movie.data.source.remote.response.MovieDetailResponse
+import com.example.movie.data.source.remote.response.MoviesResponse
+import com.example.movie.data.source.remote.response.ShowDetailResponse
+import com.example.movie.data.source.remote.response.ShowsResponse
+import com.example.movie.domain.entity.Movie
+import com.example.movie.domain.entity.MovieDetail
+import com.example.movie.domain.entity.Show
+import com.example.movie.domain.entity.ShowDetail
 
 object DummyData {
-    val moviesDto = MoviesDto(
+    val moviesDto = MoviesResponse(
         results = listOf(
-            MoviesDto.Result(
+            MoviesResponse.Result(
                 id = 1
             )
         )
     )
 
-    val movieDetailDto = MovieDetailDto(id = 567189)
+    val movieDetailDto = MovieDetailResponse(id = 567189)
 
     val movies = listOf(
         Movie(
@@ -51,15 +51,15 @@ object DummyData {
         voteCount = 0
     )
 
-    val showsDto = ShowsDto(
+    val showsDto = ShowsResponse(
         results = listOf(
-            ShowsDto.Result(
+            ShowsResponse.Result(
                 id = 1
             )
         )
     )
 
-    val showDetailDto = ShowDetailDto(id = 88396)
+    val showDetailDto = ShowDetailResponse(id = 88396)
 
     val shows = listOf(
         Show(

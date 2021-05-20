@@ -2,26 +2,26 @@ package com.example.movie.data.source.remote
 
 import com.example.movie.BuildConfig
 import com.example.movie.data.service.ApiService
-import com.example.movie.data.source.remote.response.MovieDetailDto
-import com.example.movie.data.source.remote.response.MoviesDto
-import com.example.movie.data.source.remote.response.ShowDetailDto
-import com.example.movie.data.source.remote.response.ShowsDto
+import com.example.movie.data.source.remote.response.MovieDetailResponse
+import com.example.movie.data.source.remote.response.MoviesResponse
+import com.example.movie.data.source.remote.response.ShowDetailResponse
+import com.example.movie.data.source.remote.response.ShowsResponse
 
 class RemoteDataSource(private val service: ApiService) {
 
-    suspend fun getMovies(): MoviesDto {
+    suspend fun getMovies(): MoviesResponse {
         return service.getMovies(BuildConfig.API_KEY)
     }
 
-    suspend fun getMovieDetail(movieId: Int): MovieDetailDto {
+    suspend fun getMovieDetail(movieId: Int): MovieDetailResponse {
         return service.getMovieDetail(movieId, BuildConfig.API_KEY)
     }
 
-    suspend fun getShows(): ShowsDto {
+    suspend fun getShows(): ShowsResponse {
         return service.getShows(BuildConfig.API_KEY)
     }
 
-    suspend fun getShowDetail(showId: Int): ShowDetailDto {
+    suspend fun getShowDetail(showId: Int): ShowDetailResponse {
         return service.getShowDetail(showId, BuildConfig.API_KEY)
     }
 }

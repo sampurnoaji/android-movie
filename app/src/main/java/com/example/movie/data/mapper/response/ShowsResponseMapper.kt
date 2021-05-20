@@ -1,11 +1,12 @@
-package com.example.movie.data.mapper
+package com.example.movie.data.mapper.response
 
-import com.example.movie.data.source.remote.response.ShowsDto
-import com.example.movie.domain.Show
+import com.example.movie.abstraction.Mapper
+import com.example.movie.data.source.remote.response.ShowsResponse
+import com.example.movie.domain.entity.Show
 
-class ShowsMapper {
-    operator fun invoke(showsDto: ShowsDto): List<Show> {
-        return showsDto.results?.map {
+class ShowsResponseMapper : Mapper<ShowsResponse, List<Show>>() {
+    override fun invoke(dto: ShowsResponse): List<Show> {
+        return dto.results?.map {
             Show(
                 backdropPath = it?.backdropPath.orEmpty(),
                 firstAirDate = it?.firstAirDate.orEmpty(),

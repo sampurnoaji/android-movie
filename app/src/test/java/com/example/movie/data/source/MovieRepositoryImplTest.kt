@@ -1,9 +1,9 @@
 package com.example.movie.data.source
 
-import com.example.movie.data.mapper.MovieDetailMapper
-import com.example.movie.data.mapper.MoviesMapper
-import com.example.movie.data.mapper.ShowDetailMapper
-import com.example.movie.data.mapper.ShowsMapper
+import com.example.movie.data.mapper.response.MovieDetailResponseMapper
+import com.example.movie.data.mapper.response.MoviesResponseMapper
+import com.example.movie.data.mapper.response.ShowDetailResponseMapper
+import com.example.movie.data.mapper.response.ShowsResponseMapper
 import com.example.movie.data.source.remote.RemoteDataSource
 import com.example.movie.utils.DummyData
 import com.example.movie.utils.MainCoroutineRule
@@ -24,10 +24,10 @@ class MovieRepositoryImplTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     val remoteDataSource = mock<RemoteDataSource>()
-    val moviesMapper = mock<MoviesMapper>()
-    val movieDetailMapper = mock<MovieDetailMapper>()
-    val showsMapper = mock<ShowsMapper>()
-    val showDetailMapper = mock<ShowDetailMapper>()
+    val moviesMapper = mock<MoviesResponseMapper>()
+    val movieDetailMapper = mock<MovieDetailResponseMapper>()
+    val showsMapper = mock<ShowsResponseMapper>()
+    val showDetailMapper = mock<ShowDetailResponseMapper>()
 
     private lateinit var repository: MovieRepositoryImpl
 

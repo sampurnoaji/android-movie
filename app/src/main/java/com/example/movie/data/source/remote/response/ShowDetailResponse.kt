@@ -3,7 +3,7 @@ package com.example.movie.data.source.remote.response
 
 import com.squareup.moshi.Json
 
-data class ShowDetailDto(
+data class ShowDetailResponse(
     @field:Json(name = "backdrop_path")
     val backdropPath: String? = null,
     @field:Json(name = "created_by")

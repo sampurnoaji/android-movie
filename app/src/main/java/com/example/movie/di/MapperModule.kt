@@ -1,14 +1,14 @@
 package com.example.movie.di
 
-import com.example.movie.data.mapper.MovieDetailMapper
-import com.example.movie.data.mapper.MoviesMapper
-import com.example.movie.data.mapper.ShowDetailMapper
-import com.example.movie.data.mapper.ShowsMapper
+import com.example.movie.data.mapper.response.MovieDetailResponseMapper
+import com.example.movie.data.mapper.response.MoviesResponseMapper
+import com.example.movie.data.mapper.response.ShowDetailResponseMapper
+import com.example.movie.data.mapper.response.ShowsResponseMapper
 import org.koin.dsl.module
 
 val mapperModule = module {
-    factory { MoviesMapper() }
-    factory { MovieDetailMapper() }
-    factory { ShowsMapper() }
-    factory { ShowDetailMapper() }
+    factory { MoviesResponseMapper() }
+    factory { MovieDetailResponseMapper() }
+    factory { ShowsResponseMapper() }
+    factory { ShowDetailResponseMapper() }
 }

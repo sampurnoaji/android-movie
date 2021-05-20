@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.movie.databinding.ActivityMovieDetailBinding
-import com.example.movie.domain.MovieDetail
+import com.example.movie.domain.entity.MovieDetail
 import com.example.movie.utils.formatDate
 import com.example.movie.utils.gone
 import com.example.movie.utils.loadPoster

@@ -3,7 +3,7 @@ package com.example.movie.data.source.remote.response
 
 import com.squareup.moshi.Json
 
-data class ShowsDto(
+data class ShowsResponse(
     @field:Json(name = "page")
     val page: Int? = null,
     @field:Json(name = "results")

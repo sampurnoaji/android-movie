@@ -3,7 +3,7 @@ package com.example.movie.data.source.remote.response
 
 import com.squareup.moshi.Json
 
-data class MovieDetailDto(
+data class MovieDetailResponse(
     @field:Json(name = "adult")
     val adult: Boolean? = null,
     @field:Json(name = "backdrop_path")

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movie.databinding.ItemsShowBinding
-import com.example.movie.domain.Show
+import com.example.movie.domain.entity.Show
 import com.example.movie.utils.formatDate
 import com.example.movie.utils.loadPoster
 

@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -58,11 +59,16 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
 
     //network
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$loggingInterceptorVersion"
     implementation "com.squareup.retrofit2:converter-moshi:$moshiVersion"
+
+    //room
+    implementation "androidx.room:room-runtime:$roomRuntimeVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
 
     //testing
     implementation "androidx.test.espresso:espresso-idling-resource:$idleResourceVersion"
