@@ -11,4 +11,7 @@
     <string name="vote_average">Vote Average</string>
     <string name="popularity">Popularity</string>
     <string name="overview">Overview</string>
+    <string name="newest">Newest</string>
+    <string name="oldest">Oldest</string>
+    <string name="favorite">Favorite</string>
 </resources>
