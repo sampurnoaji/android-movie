@@ -5,7 +5,7 @@ import com.example.movie.data.source.remote.response.ShowDetailResponse
 import com.example.movie.domain.entity.ShowDetail
 
 class ShowDetailResponseMapper : Mapper<ShowDetailResponse, ShowDetail>() {
-    override fun invoke(dto: ShowDetailResponse): ShowDetail {
+    override operator fun invoke(dto: ShowDetailResponse): ShowDetail {
         return ShowDetail(
             id = dto.id ?: 0,
             originalLanguage = dto.originalLanguage.orEmpty(),

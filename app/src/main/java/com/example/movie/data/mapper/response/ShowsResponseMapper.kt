@@ -5,7 +5,7 @@ import com.example.movie.data.source.remote.response.ShowsResponse
 import com.example.movie.domain.entity.Show
 
 class ShowsResponseMapper : Mapper<ShowsResponse, List<Show>>() {
-    override fun invoke(dto: ShowsResponse): List<Show> {
+    override operator fun invoke(dto: ShowsResponse): List<Show> {
         return dto.results?.map {
             Show(
                 backdropPath = it?.backdropPath.orEmpty(),

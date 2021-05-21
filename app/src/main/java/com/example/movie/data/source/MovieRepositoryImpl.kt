@@ -1,37 +1,71 @@
 package com.example.movie.data.source
 
-import com.example.movie.data.mapper.response.MovieDetailResponseMapper
-import com.example.movie.data.mapper.response.MoviesResponseMapper
-import com.example.movie.data.mapper.response.ShowDetailResponseMapper
-import com.example.movie.data.mapper.response.ShowsResponseMapper
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import com.example.movie.data.mapper.EntityMapper
+import com.example.movie.data.mapper.ResponseMapper
+import com.example.movie.data.source.local.LocalDataSource
 import com.example.movie.data.source.remote.RemoteDataSource
+import com.example.movie.data.source.remote.response.MoviesResponse
 import com.example.movie.domain.MovieRepository
 import com.example.movie.domain.entity.Movie
 import com.example.movie.domain.entity.MovieDetail
 import com.example.movie.domain.entity.Show
 import com.example.movie.domain.entity.ShowDetail
+import com.example.movie.utils.AppExecutors
+import com.example.movie.vo.ApiResponse
 import com.example.movie.vo.LoadResult
+import com.example.movie.vo.Resource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 class MovieRepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
-    private val moviesResponseMapper: MoviesResponseMapper,
-    private val movieDetailResponseMapper: MovieDetailResponseMapper,
-    private val showsResponseMapper: ShowsResponseMapper,
-    private val showDetailResponseMapper: ShowDetailResponseMapper
+    private val localDataSource: LocalDataSource,
+    private val appExecutors: AppExecutors,
+    private val entityMapper: EntityMapper,
+    private val responseMapper: ResponseMapper
 ) : MovieRepository {
 
-    override suspend fun getMovies(): Flow<LoadResult<List<Movie>>> {
-        return flow {
-            emit(LoadResult.Loading)
-            try {
-                val result = remoteDataSource.getMovies()
-                emit(LoadResult.Success(moviesResponseMapper(result)))
-            } catch (e: Exception) {
-                emit(LoadResult.Error)
+    override suspend fun getMovies(): LiveData<Resource<PagedList<Movie>>> {
+        return object : NetworkBoundResource<PagedList<Movie>, MoviesResponse>(appExecutors) {
+            override fun loadFromDb(): LiveData<PagedList<Movie>> {
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(5)
+                    .setPageSize(5)
+                    .build()
+                val pagedMovies = localDataSource.getMovies().mapByPage {
+                    entityMapper.moviesEntityMapper(it)
+                }
+                return LivePagedListBuilder(pagedMovies, config).build()
             }
-        }
+
+            override fun shouldFetch(data: PagedList<Movie>?): Boolean {
+                return data == null || data.isEmpty()
+            }
+
+            override fun createCall(): LiveData<ApiResponse<MoviesResponse>> {
+                val context = Dispatchers.IO + SupervisorJob()
+                val result = MutableLiveData<ApiResponse<MoviesResponse>>()
+
+                CoroutineScope(context).launch {
+                    result.postValue(ApiResponse.success(remoteDataSource.getMovies()))
+                }
+                return result
+            }
+
+            override fun saveCallResult(data: MoviesResponse) {
+                val moviesEntity = responseMapper.moviesResponseMapper.toEntity(data)
+                localDataSource.insertMovies(moviesEntity)
+            }
+        }.asLiveData()
     }
 
     override suspend fun getMovieDetail(movieId: Int): Flow<LoadResult<MovieDetail>> {
@@ -39,7 +73,7 @@ class MovieRepositoryImpl(
             emit(LoadResult.Loading)
             try {
                 val result = remoteDataSource.getMovieDetail(movieId)
-                emit(LoadResult.Success(movieDetailResponseMapper(result)))
+                emit(LoadResult.Success(responseMapper.movieDetailResponseMapper(result)))
             } catch (e: Exception) {
                 emit(LoadResult.Error)
             }
@@ -51,7 +85,7 @@ class MovieRepositoryImpl(
             emit(LoadResult.Loading)
             try {
                 val result = remoteDataSource.getShows()
-                emit(LoadResult.Success(showsResponseMapper(result)))
+                emit(LoadResult.Success(responseMapper.showsResponseMapper(result)))
             } catch (e: Exception) {
                 emit(LoadResult.Error)
             }
@@ -63,7 +97,7 @@ class MovieRepositoryImpl(
             emit(LoadResult.Loading)
             try {
                 val result = remoteDataSource.getShowDetail(showId)
-                emit(LoadResult.Success(showDetailResponseMapper(result)))
+                emit(LoadResult.Success(responseMapper.showDetailResponseMapper(result)))
             } catch (e: Exception) {
                 emit(LoadResult.Error)
             }

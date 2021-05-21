@@ -11,7 +11,10 @@ import com.example.movie.databinding.FragmentMoviesBinding
 import com.example.movie.ui.detail.movie.MovieDetailActivity
 import com.example.movie.utils.gone
 import com.example.movie.utils.visible
-import com.example.movie.vo.LoadResult
+import com.example.movie.vo.Status
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MoviesFragment : Fragment(), MovieListAdapter.MovieItemListener {
@@ -30,23 +33,25 @@ class MoviesFragment : Fragment(), MovieListAdapter.MovieItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vm.getMovies()
-        vm.movieResult.observe(viewLifecycleOwner) {
-            when (it) {
-                is LoadResult.Loading -> binding.progressBar.visible()
-                is LoadResult.Success -> {
-                    binding.progressBar.gone()
+        CoroutineScope(Dispatchers.Main).launch {
+            vm.getMovies().observe(viewLifecycleOwner) {
+                when (it.status) {
+                    Status.LOADING -> binding.progressBar.visible()
+                    Status.SUCCESS -> {
+                        binding.progressBar.gone()
 
-                    val movieListAdapter = MovieListAdapter(it.data, this)
-                    with(binding.rvMovies) {
-                        layoutManager = LinearLayoutManager(context)
-                        setHasFixedSize(true)
-                        adapter = movieListAdapter
+                        val movieListAdapter = MovieListAdapter(this@MoviesFragment)
+                        with(binding.rvMovies) {
+                            layoutManager = LinearLayoutManager(context)
+                            setHasFixedSize(true)
+                            adapter = movieListAdapter
+                        }
+                        movieListAdapter.submitList(it.data)
                     }
-                }
-                is LoadResult.Error -> {
-                    binding.progressBar.gone()
-                    Toast.makeText(requireActivity(), "Error", Toast.LENGTH_SHORT).show()
+                    Status.ERROR -> {
+                        binding.progressBar.gone()
+                        Toast.makeText(requireActivity(), "Error", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
