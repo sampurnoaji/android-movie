@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Movie">
-        <activity android:name=".ui.favorite.FavoriteActivity"></activity>
+        <activity
+            android:name=".ui.favorite.FavoriteActivity"
+            android:label="@string/favorite" />
         <activity
             android:name=".ui.detail.show.ShowDetailActivity"
             android:label="@string/detail" />

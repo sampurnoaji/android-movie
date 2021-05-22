@@ -2,11 +2,13 @@ package com.example.movie.data.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.movie.data.mapper.EntityMapper
 import com.example.movie.data.mapper.ResponseMapper
 import com.example.movie.data.source.local.LocalDataSource
+import com.example.movie.data.source.local.entity.FavoriteMovieEntity
 import com.example.movie.data.source.remote.RemoteDataSource
 import com.example.movie.data.source.remote.response.MoviesResponse
 import com.example.movie.domain.MovieRepository
@@ -42,7 +44,9 @@ class MovieRepositoryImpl(
                     .setPageSize(5)
                     .build()
                 val pagedMovies = localDataSource.getMovies().mapByPage {
-                    entityMapper.moviesEntityMapper(it)
+                    it.map { movie ->
+                        entityMapper.moviesEntityMapper(movie)
+                    }
                 }
                 return LivePagedListBuilder(pagedMovies, config).build()
             }
@@ -68,6 +72,11 @@ class MovieRepositoryImpl(
         }.asLiveData()
     }
 
+    override suspend fun getMovieById(id: Int): LiveData<Movie> {
+        val movie = localDataSource.getMovieById(id)
+        return liveData { movie.value?.let { entityMapper.moviesEntityMapper(it) } }
+    }
+
     override suspend fun getMovieDetail(movieId: Int): Flow<LoadResult<MovieDetail>> {
         return flow {
             emit(LoadResult.Loading)
@@ -78,6 +87,19 @@ class MovieRepositoryImpl(
                 emit(LoadResult.Error)
             }
         }
+    }
+
+    override suspend fun insertFavoriteMovie(favoriteMovie: FavoriteMovieEntity) {
+        localDataSource.insertFavoriteMovie(favoriteMovie)
+    }
+
+    override suspend fun getFavoriteMovies(): LiveData<PagedList<FavoriteMovieEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+        return LivePagedListBuilder(localDataSource.getFavoriteMovies(), config).build()
     }
 
     override suspend fun getShows(): Flow<LoadResult<List<Show>>> {

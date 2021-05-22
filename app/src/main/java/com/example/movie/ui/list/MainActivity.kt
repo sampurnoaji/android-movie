@@ -6,9 +6,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentPagerAdapter
 import com.example.movie.R
 import com.example.movie.databinding.ActivityMainBinding
 import com.example.movie.ui.favorite.FavoriteActivity
+import com.example.movie.ui.list.movie.MoviesFragment
+import com.example.movie.ui.list.show.ShowsFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,8 +20,14 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
-        binding.viewPager.adapter = sectionsPagerAdapter
+        val adapter = SectionsPagerAdapter(
+            supportFragmentManager,
+            FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+        )
+        adapter.addFragment(MoviesFragment(), getString(R.string.movies))
+        adapter.addFragment(ShowsFragment(), getString(R.string.shows))
+
+        binding.viewPager.adapter = adapter
         binding.tabs.setupWithViewPager(binding.viewPager)
 
         setSupportActionBar(binding.toolbar)

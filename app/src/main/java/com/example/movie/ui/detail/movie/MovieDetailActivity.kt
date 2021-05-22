@@ -43,12 +43,21 @@ class MovieDetailActivity : AppCompatActivity() {
             vm.setSelectedMovie(it)
             vm.getMovieDetail()
         }
+        observeMovieDetailResult()
+
+        binding.fabAddToFavorite.setOnClickListener {
+            vm.insertFavoriteMovie()
+        }
+    }
+
+    private fun observeMovieDetailResult() {
         vm.movieDetailResult.observe(this) {
             when (it) {
                 is LoadResult.Loading -> binding.progressBar.visible()
                 is LoadResult.Success -> {
                     binding.progressBar.gone()
                     populateMovie(it.data)
+                    vm.movieDetail = it.data
                 }
                 is LoadResult.Error -> {
                     binding.progressBar.gone()

@@ -32,5 +32,7 @@ data class MovieEntity(
     @ColumnInfo(name = "vote_average")
     val voteAverage: Float? = null,
     @ColumnInfo(name = "vote_count")
-    val voteCount: Int? = null
+    val voteCount: Int? = null,
+    @ColumnInfo(name = "favorite")
+    var favorite: Boolean = false
 )

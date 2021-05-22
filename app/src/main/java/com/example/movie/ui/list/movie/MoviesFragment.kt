@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movie.databinding.FragmentMoviesBinding
 import com.example.movie.ui.detail.movie.MovieDetailActivity
 import com.example.movie.utils.gone
 import com.example.movie.utils.visible
 import com.example.movie.vo.Status
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -33,7 +32,7 @@ class MoviesFragment : Fragment(), MovieListAdapter.MovieItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        CoroutineScope(Dispatchers.Main).launch {
+        lifecycleScope.launch {
             vm.getMovies().observe(viewLifecycleOwner) {
                 when (it.status) {
                     Status.LOADING -> binding.progressBar.visible()
