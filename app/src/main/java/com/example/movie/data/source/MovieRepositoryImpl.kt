@@ -2,7 +2,6 @@ package com.example.movie.data.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.movie.data.mapper.EntityMapper
@@ -72,11 +71,6 @@ class MovieRepositoryImpl(
         }.asLiveData()
     }
 
-    override suspend fun getMovieById(id: Int): LiveData<Movie> {
-        val movie = localDataSource.getMovieById(id)
-        return liveData { movie.value?.let { entityMapper.moviesEntityMapper(it) } }
-    }
-
     override suspend fun getMovieDetail(movieId: Int): Flow<LoadResult<MovieDetail>> {
         return flow {
             emit(LoadResult.Loading)
@@ -100,6 +94,10 @@ class MovieRepositoryImpl(
             .setPageSize(4)
             .build()
         return LivePagedListBuilder(localDataSource.getFavoriteMovies(), config).build()
+    }
+
+    override suspend fun deleteFavoriteMovie(favoriteMovie: FavoriteMovieEntity) {
+        localDataSource.deleteFavoriteMovie(favoriteMovie)
     }
 
     override suspend fun getShows(): Flow<LoadResult<List<Show>>> {

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.movie.data.source.local.entity.FavoriteMovieEntity
 import com.example.movie.databinding.FragmentFavoriteMovieBinding
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -41,4 +42,7 @@ class FavoriteMovieFragment : Fragment(), FavoriteMovieListAdapter.MovieItemList
     }
 
     override fun onMovieClicked(id: Int) {}
+    override fun onDeleteFavoriteMovie(favoriteMovie: FavoriteMovieEntity) {
+        vm.deleteFavoriteMovie(favoriteMovie)
+    }
 }

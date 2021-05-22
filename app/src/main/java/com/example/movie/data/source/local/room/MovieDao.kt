@@ -1,11 +1,7 @@
 package com.example.movie.data.source.local.room
 
-import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.movie.data.source.local.entity.FavoriteMovieEntity
 import com.example.movie.data.source.local.entity.MovieEntity
 
@@ -24,6 +20,6 @@ interface MovieDao {
     @Query("SELECT * FROM favorite_movie_entities")
     fun getFavoriteMovies(): DataSource.Factory<Int, FavoriteMovieEntity>
 
-    @Query("SELECT * FROM movie_entities WHERE id = :id")
-    fun getMovieById(id: Int): LiveData<MovieEntity>
+    @Delete
+    suspend fun deleteFavoriteMovie(favoriteMovie: FavoriteMovieEntity)
 }

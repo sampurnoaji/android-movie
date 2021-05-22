@@ -9,6 +9,7 @@ import com.example.movie.data.source.local.entity.FavoriteMovieEntity
 import com.example.movie.databinding.ItemsMovieBinding
 import com.example.movie.utils.formatDate
 import com.example.movie.utils.loadPoster
+import com.example.movie.utils.visible
 
 class FavoriteMovieListAdapter(private val listener: MovieItemListener) :
     PagedListAdapter<FavoriteMovieEntity, FavoriteMovieListAdapter.ContentViewHolder>(DIFF_CALLBACK) {
@@ -50,11 +51,15 @@ class FavoriteMovieListAdapter(private val listener: MovieItemListener) :
             binding.listDate.text = movie.releaseDate?.formatDate()
             binding.listOverview.text = movie.overview
 
+            binding.fabDelete.visible()
+            binding.fabDelete.setOnClickListener { listener.onDeleteFavoriteMovie(movie) }
+
             binding.container.setOnClickListener { listener.onMovieClicked(movie.id) }
         }
     }
 
     interface MovieItemListener {
         fun onMovieClicked(id: Int)
+        fun onDeleteFavoriteMovie(favoriteMovie: FavoriteMovieEntity)
     }
 }
