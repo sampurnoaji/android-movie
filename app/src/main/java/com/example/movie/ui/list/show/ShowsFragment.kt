@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movie.databinding.FragmentShowsBinding
 import com.example.movie.ui.detail.show.ShowDetailActivity
 import com.example.movie.utils.gone
 import com.example.movie.utils.visible
-import com.example.movie.vo.LoadResult
+import com.example.movie.vo.Status
+import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ShowsFragment : Fragment(), ShowListAdapter.ShowItemListener {
@@ -30,23 +32,25 @@ class ShowsFragment : Fragment(), ShowListAdapter.ShowItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vm.getShows()
-        vm.showsResult.observe(viewLifecycleOwner) {
-            when (it) {
-                is LoadResult.Loading -> binding.progressBar.visible()
-                is LoadResult.Success -> {
-                    binding.progressBar.gone()
+        lifecycleScope.launch {
+            vm.getShows().observe(viewLifecycleOwner) {
+                when (it.status) {
+                    Status.LOADING -> binding.progressBar.visible()
+                    Status.SUCCESS -> {
+                        binding.progressBar.gone()
 
-                    val showListAdapter = ShowListAdapter(it.data, this)
-                    with(binding.rvShows) {
-                        layoutManager = LinearLayoutManager(context)
-                        setHasFixedSize(true)
-                        adapter = showListAdapter
+                        val showListAdapter = ShowListAdapter(this@ShowsFragment)
+                        with(binding.rvShows) {
+                            layoutManager = LinearLayoutManager(context)
+                            setHasFixedSize(true)
+                            adapter = showListAdapter
+                        }
+                        showListAdapter.submitList(it.data)
                     }
-                }
-                is LoadResult.Error -> {
-                    binding.progressBar.gone()
-                    Toast.makeText(requireActivity(), "Error", Toast.LENGTH_SHORT).show()
+                    Status.ERROR -> {
+                        binding.progressBar.gone()
+                        Toast.makeText(requireActivity(), "Error", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

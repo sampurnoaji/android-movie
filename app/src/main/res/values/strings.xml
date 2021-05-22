@@ -15,7 +15,7 @@
     <string name="oldest">Oldest</string>
     <string name="favorite">Favorite</string>
     <string name="add_to_favorite">Add to favorite</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="delete">Delete</string>
+    <string name="add_movie_to_favorite">Adding movie…</string>
+    <string name="add_show_to_favorite">Adding show…</string>
 </resources>

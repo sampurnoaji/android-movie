@@ -3,6 +3,7 @@ package com.example.movie.di
 import com.example.movie.data.mapper.EntityMapper
 import com.example.movie.data.mapper.ResponseMapper
 import com.example.movie.data.mapper.entity.MoviesEntityMapper
+import com.example.movie.data.mapper.entity.ShowsEntityMapper
 import com.example.movie.data.mapper.response.MovieDetailResponseMapper
 import com.example.movie.data.mapper.response.MoviesResponseMapper
 import com.example.movie.data.mapper.response.ShowDetailResponseMapper
@@ -24,9 +25,11 @@ val mapperModule = module {
     }
 
     factory { MoviesEntityMapper() }
+    factory { ShowsEntityMapper() }
     factory {
         EntityMapper(
-            moviesEntityMapper = get()
+            moviesEntityMapper = get(),
+            showsEntityMapper = get()
         )
     }
 }

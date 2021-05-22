@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.example.movie.R
 import com.example.movie.databinding.ActivityFavoriteBinding
 import com.example.movie.ui.favorite.movie.FavoriteMovieFragment
+import com.example.movie.ui.favorite.show.FavoriteShowFragment
 import com.example.movie.ui.list.SectionsPagerAdapter
 
 class FavoriteActivity : AppCompatActivity() {
@@ -23,11 +24,13 @@ class FavoriteActivity : AppCompatActivity() {
             FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
         )
         adapter.addFragment(FavoriteMovieFragment(), getString(R.string.movies))
+        adapter.addFragment(FavoriteShowFragment(), getString(R.string.shows))
 
         binding.viewPager.adapter = adapter
         binding.tabs.setupWithViewPager(binding.viewPager)
 
         setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

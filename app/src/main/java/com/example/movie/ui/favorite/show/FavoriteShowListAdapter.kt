@@ -1,25 +1,32 @@
-package com.example.movie.ui.list.show
+package com.example.movie.ui.favorite.show
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.movie.data.source.local.entity.FavoriteShowEntity
 import com.example.movie.databinding.ItemsShowBinding
-import com.example.movie.domain.entity.Show
 import com.example.movie.utils.formatDate
 import com.example.movie.utils.loadPoster
+import com.example.movie.utils.visible
 
-class ShowListAdapter(private val listener: ShowItemListener) :
-    PagedListAdapter<Show, ShowListAdapter.ContentViewHolder>(DIFF_CALLBACK) {
+class FavoriteShowListAdapter(private val listener: ShowItemListener) :
+    PagedListAdapter<FavoriteShowEntity, FavoriteShowListAdapter.ContentViewHolder>(DIFF_CALLBACK) {
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Show>() {
-            override fun areItemsTheSame(oldItem: Show, newItem: Show): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FavoriteShowEntity>() {
+            override fun areItemsTheSame(
+                oldItem: FavoriteShowEntity,
+                newItem: FavoriteShowEntity
+            ): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: Show, newItem: Show): Boolean {
+            override fun areContentsTheSame(
+                oldItem: FavoriteShowEntity,
+                newItem: FavoriteShowEntity
+            ): Boolean {
                 return oldItem == newItem
             }
         }
@@ -44,11 +51,14 @@ class ShowListAdapter(private val listener: ShowItemListener) :
             }
         }
 
-        fun bind(show: Show, listener: ShowItemListener) {
-            binding.listPoster.loadPoster(show.posterPath)
+        fun bind(show: FavoriteShowEntity, listener: ShowItemListener) {
+            binding.listPoster.loadPoster(show.posterPath ?: "")
             binding.listTitle.text = show.name
-            binding.listDate.text = show.firstAirDate.formatDate()
+            binding.listDate.text = show.firstAirDate?.formatDate()
             binding.listOverview.text = show.overview
+
+            binding.fabDelete.visible()
+            binding.fabDelete.setOnClickListener { listener.onDeleteFavoriteShow(show) }
 
             binding.container.setOnClickListener { listener.onShowClicked(show.id) }
         }
@@ -56,5 +66,6 @@ class ShowListAdapter(private val listener: ShowItemListener) :
 
     interface ShowItemListener {
         fun onShowClicked(id: Int)
+        fun onDeleteFavoriteShow(favoriteShow: FavoriteShowEntity)
     }
 }

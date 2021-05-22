@@ -9,7 +9,7 @@ class MoviesEntityMapper : Mapper<MovieEntity, Movie>() {
         return Movie(
             adult = dto.adult ?: false,
             backdropPath = dto.backdropPath.orEmpty(),
-            genreIds = emptyList(), //todo research to handle array data
+            genreIds = emptyList(), //todo save list to db
             id = dto.id ?: 0,
             originalLanguage = dto.originalLanguage.orEmpty(),
             originalTitle = dto.originalTitle.orEmpty(),

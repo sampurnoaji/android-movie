@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.movie.R
 import com.example.movie.databinding.ActivityMovieDetailBinding
 import com.example.movie.domain.entity.MovieDetail
 import com.example.movie.utils.formatDate
@@ -12,6 +13,7 @@ import com.example.movie.utils.gone
 import com.example.movie.utils.loadPoster
 import com.example.movie.utils.visible
 import com.example.movie.vo.LoadResult
+import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MovieDetailActivity : AppCompatActivity() {
@@ -47,6 +49,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
         binding.fabAddToFavorite.setOnClickListener {
             vm.insertFavoriteMovie()
+            Snackbar.make(it, getString(R.string.add_movie_to_favorite), Snackbar.LENGTH_SHORT).show()
         }
     }
 

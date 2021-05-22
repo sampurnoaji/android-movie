@@ -1,6 +1,7 @@
 package com.example.movie.data.mapper.response
 
 import com.example.movie.abstraction.Mapper
+import com.example.movie.data.source.local.entity.ShowEntity
 import com.example.movie.data.source.remote.response.ShowsResponse
 import com.example.movie.domain.entity.Show
 
@@ -34,6 +35,24 @@ class ShowsResponseMapper : Mapper<ShowsResponse, List<Show>>() {
     private fun List<String?>?.mapOriginCountry(): List<String> {
         return this?.map {
             it.orEmpty()
+        } ?: emptyList()
+    }
+
+    fun toEntity(dto: ShowsResponse): List<ShowEntity> {
+        return dto.results?.map {
+            ShowEntity(
+                backdropPath = it?.backdropPath.orEmpty(),
+                firstAirDate = it?.firstAirDate.orEmpty(),
+                id = it?.id ?: 0,
+                name = it?.name.orEmpty(),
+                originalLanguage = it?.originalLanguage.orEmpty(),
+                originalName = it?.originalName.orEmpty(),
+                overview = it?.overview.orEmpty(),
+                popularity = it?.popularity ?: 0f,
+                posterPath = it?.posterPath.orEmpty(),
+                voteAverage = it?.voteAverage ?: 0f,
+                voteCount = it?.voteCount ?: 0
+            )
         } ?: emptyList()
     }
 }

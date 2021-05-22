@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.movie.R
 import com.example.movie.databinding.ActivityShowDetailBinding
 import com.example.movie.domain.entity.ShowDetail
 import com.example.movie.utils.formatDate
@@ -12,6 +13,7 @@ import com.example.movie.utils.gone
 import com.example.movie.utils.loadPoster
 import com.example.movie.utils.visible
 import com.example.movie.vo.LoadResult
+import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ShowDetailActivity : AppCompatActivity() {
@@ -43,12 +45,22 @@ class ShowDetailActivity : AppCompatActivity() {
             vm.setSelectedShow(it)
             vm.getShowDetail()
         }
+        observeShowDetailResult()
+
+        binding.fabAddToFavorite.setOnClickListener {
+            vm.insertFavoriteShow()
+            Snackbar.make(it, getString(R.string.add_show_to_favorite), Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun observeShowDetailResult() {
         vm.showDetailResult.observe(this) {
             when (it) {
                 is LoadResult.Loading -> binding.progressBar.visible()
                 is LoadResult.Success -> {
                     binding.progressBar.gone()
                     populateShow(it.data)
+                    vm.showDetail = it.data
                 }
                 is LoadResult.Error -> {
                     binding.progressBar.gone()

@@ -8,8 +8,10 @@ import com.example.movie.data.mapper.EntityMapper
 import com.example.movie.data.mapper.ResponseMapper
 import com.example.movie.data.source.local.LocalDataSource
 import com.example.movie.data.source.local.entity.FavoriteMovieEntity
+import com.example.movie.data.source.local.entity.FavoriteShowEntity
 import com.example.movie.data.source.remote.RemoteDataSource
 import com.example.movie.data.source.remote.response.MoviesResponse
+import com.example.movie.data.source.remote.response.ShowsResponse
 import com.example.movie.domain.MovieRepository
 import com.example.movie.domain.entity.Movie
 import com.example.movie.domain.entity.MovieDetail
@@ -100,16 +102,41 @@ class MovieRepositoryImpl(
         localDataSource.deleteFavoriteMovie(favoriteMovie)
     }
 
-    override suspend fun getShows(): Flow<LoadResult<List<Show>>> {
-        return flow {
-            emit(LoadResult.Loading)
-            try {
-                val result = remoteDataSource.getShows()
-                emit(LoadResult.Success(responseMapper.showsResponseMapper(result)))
-            } catch (e: Exception) {
-                emit(LoadResult.Error)
+    override suspend fun getShows(): LiveData<Resource<PagedList<Show>>> {
+        return object : NetworkBoundResource<PagedList<Show>, ShowsResponse>(appExecutors) {
+            override fun loadFromDb(): LiveData<PagedList<Show>> {
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(5)
+                    .setPageSize(5)
+                    .build()
+                val pagedShows = localDataSource.getShows().mapByPage {
+                    it.map { show ->
+                        entityMapper.showsEntityMapper(show)
+                    }
+                }
+                return LivePagedListBuilder(pagedShows, config).build()
             }
-        }
+
+            override fun shouldFetch(data: PagedList<Show>?): Boolean {
+                return data == null || data.isEmpty()
+            }
+
+            override fun createCall(): LiveData<ApiResponse<ShowsResponse>> {
+                val context = Dispatchers.IO + SupervisorJob()
+                val result = MutableLiveData<ApiResponse<ShowsResponse>>()
+
+                CoroutineScope(context).launch {
+                    result.postValue(ApiResponse.success(remoteDataSource.getShows()))
+                }
+                return result
+            }
+
+            override fun saveCallResult(data: ShowsResponse) {
+                val showsEntity = responseMapper.showsResponseMapper.toEntity(data)
+                localDataSource.insertShows(showsEntity)
+            }
+        }.asLiveData()
     }
 
     override suspend fun getShowDetail(showId: Int): Flow<LoadResult<ShowDetail>> {
@@ -122,5 +149,22 @@ class MovieRepositoryImpl(
                 emit(LoadResult.Error)
             }
         }
+    }
+
+    override suspend fun getFavoriteShows(): LiveData<PagedList<FavoriteShowEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+        return LivePagedListBuilder(localDataSource.getFavoriteShows(), config).build()
+    }
+
+    override suspend fun insertFavoriteShow(favoriteShow: FavoriteShowEntity) {
+        localDataSource.insertFavoriteShow(favoriteShow)
+    }
+
+    override suspend fun deleteFavoriteShow(favoriteShow: FavoriteShowEntity) {
+        localDataSource.deleteFavoriteShow(favoriteShow)
     }
 }
