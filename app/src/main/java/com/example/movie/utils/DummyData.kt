@@ -1,5 +1,9 @@
 package com.example.movie.utils
 
+import com.example.movie.data.source.local.entity.FavoriteMovieEntity
+import com.example.movie.data.source.local.entity.FavoriteShowEntity
+import com.example.movie.data.source.local.entity.MovieEntity
+import com.example.movie.data.source.local.entity.ShowEntity
 import com.example.movie.data.source.remote.response.MovieDetailResponse
 import com.example.movie.data.source.remote.response.MoviesResponse
 import com.example.movie.data.source.remote.response.ShowDetailResponse
@@ -51,6 +55,34 @@ object DummyData {
         voteCount = 0
     )
 
+    val moviesEntity = listOf(
+        MovieEntity(
+            adult = false,
+            backdropPath = "",
+            id = 0,
+            originalLanguage = "",
+            originalTitle = "",
+            overview = "",
+            popularity = 0f,
+            posterPath = "",
+            releaseDate = "",
+            title = "",
+            video = false,
+            voteAverage = 0f,
+            voteCount = 0
+        )
+    )
+
+    val favoriteMoviesEntity = listOf(
+        FavoriteMovieEntity(
+            id = 0,
+            title = "",
+            releaseDate = "",
+            posterPath = "",
+            overview = ""
+        )
+    )
+
     val showsDto = ShowsResponse(
         results = listOf(
             ShowsResponse.Result(
@@ -89,5 +121,31 @@ object DummyData {
         name = "",
         voteAverage = 0f,
         voteCount = 0
+    )
+
+    val showsEntity = listOf(
+        ShowEntity(
+            backdropPath = "",
+            firstAirDate = "",
+            id = 0,
+            name = "",
+            originalLanguage = "",
+            originalName = "",
+            overview = "",
+            popularity = 0f,
+            posterPath = "",
+            voteAverage = 0f,
+            voteCount = 0
+        )
+    )
+
+    val favoriteShowsEntity = listOf(
+        FavoriteShowEntity(
+            id = 0,
+            name = "",
+            firstAirDate = "",
+            posterPath = "",
+            overview = ""
+        )
     )
 }

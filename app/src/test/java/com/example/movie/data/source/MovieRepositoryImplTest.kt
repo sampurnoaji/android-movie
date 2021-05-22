@@ -1,12 +1,21 @@
 package com.example.movie.data.source
 
-import com.example.movie.data.mapper.response.MovieDetailResponseMapper
-import com.example.movie.data.mapper.response.MoviesResponseMapper
-import com.example.movie.data.mapper.response.ShowDetailResponseMapper
-import com.example.movie.data.mapper.response.ShowsResponseMapper
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.paging.DataSource
+import com.example.movie.data.mapper.EntityMapper
+import com.example.movie.data.mapper.ResponseMapper
+import com.example.movie.data.source.local.LocalDataSource
+import com.example.movie.data.source.local.entity.FavoriteMovieEntity
+import com.example.movie.data.source.local.entity.FavoriteShowEntity
+import com.example.movie.data.source.local.entity.MovieEntity
+import com.example.movie.data.source.local.entity.ShowEntity
 import com.example.movie.data.source.remote.RemoteDataSource
+import com.example.movie.utils.AppExecutors
 import com.example.movie.utils.DummyData
 import com.example.movie.utils.MainCoroutineRule
+import com.example.movie.utils.PagedListUtil
+import com.example.movie.utils.database.SortUtil
+import com.example.movie.vo.Resource
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,42 +30,57 @@ import org.mockito.kotlin.mock
 class MovieRepositoryImplTest {
 
     @get:Rule
-    var mainCoroutineRule = MainCoroutineRule()
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    val remoteDataSource = mock<RemoteDataSource>()
-    val moviesMapper = mock<MoviesResponseMapper>()
-    val movieDetailMapper = mock<MovieDetailResponseMapper>()
-    val showsMapper = mock<ShowsResponseMapper>()
-    val showDetailMapper = mock<ShowDetailResponseMapper>()
+    @get:Rule
+    var mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var repository: MovieRepositoryImpl
 
+    private val remoteDataSource = mock<RemoteDataSource>()
+    private val localDataSource = mock<LocalDataSource>()
+    private val appExecutors = mock<AppExecutors>()
+    private val entityMapper = mock<EntityMapper>()
+    private val responseMapper = mock<ResponseMapper>()
+
+    private val sort = SortUtil.NEWEST
+
     @Before
     fun setUp() {
-        repository = MovieRepositoryImpl(remoteDataSource, moviesMapper, movieDetailMapper, showsMapper, showDetailMapper)
+        repository = MovieRepositoryImpl(
+            remoteDataSource,
+            localDataSource,
+            appExecutors,
+            entityMapper,
+            responseMapper
+        )
     }
 
     @Test
     fun getMovies() {
         mainCoroutineRule.testDispatcher.runBlockingTest {
-            val dummy = DummyData.moviesDto
-            Mockito.`when`(remoteDataSource.getMovies()).thenReturn(dummy)
-            val response = remoteDataSource.getMovies()
-            Mockito.verify(remoteDataSource).getMovies()
-            assertNotNull(repository.getMovies())
-            assertEquals(response.results?.size, dummy.results?.size)
+            val dataSourceFactory = mock<DataSource.Factory<Int, MovieEntity>>()
+            Mockito.`when`(localDataSource.getMovies(sort)).thenReturn(dataSourceFactory)
+            localDataSource.getMovies(sort)
+
+            val moviesEntity = Resource.success(PagedListUtil.mockPagedList(DummyData.moviesEntity))
+            Mockito.verify(localDataSource).getMovies(sort)
+            assertNotNull(moviesEntity)
+            assertEquals(DummyData.moviesDto.results?.size, moviesEntity.data?.size)
         }
     }
 
     @Test
     fun getShows() {
         mainCoroutineRule.testDispatcher.runBlockingTest {
-            val dummy = DummyData.showsDto
-            Mockito.`when`(remoteDataSource.getShows()).thenReturn(dummy)
-            val response = remoteDataSource.getShows()
-            Mockito.verify(remoteDataSource).getShows()
-            assertNotNull(repository.getShows())
-            assertEquals(response.results?.size, dummy.results?.size)
+            val dataSourceFactory = mock<DataSource.Factory<Int, ShowEntity>>()
+            Mockito.`when`(localDataSource.getShows(sort)).thenReturn(dataSourceFactory)
+            localDataSource.getShows(sort)
+
+            val showsEntity = Resource.success(PagedListUtil.mockPagedList(DummyData.showsEntity))
+            Mockito.verify(localDataSource).getShows(sort)
+            assertNotNull(showsEntity)
+            assertEquals(DummyData.showsDto.results?.size, showsEntity.data?.size)
         }
     }
 
@@ -83,6 +107,34 @@ class MovieRepositoryImplTest {
             Mockito.verify(remoteDataSource).getShowDetail(id)
             assertNotNull(repository.getShowDetail(id))
             assertEquals(response.id, dummy.id)
+        }
+    }
+
+    @Test
+    fun getFavoriteMovies() {
+        mainCoroutineRule.testDispatcher.runBlockingTest {
+            val dataSourceFactory = mock<DataSource.Factory<Int, FavoriteMovieEntity>>()
+            Mockito.`when`(localDataSource.getFavoriteMovies()).thenReturn(dataSourceFactory)
+            repository.getFavoriteMovies()
+
+            val moviesEntity = PagedListUtil.mockPagedList(DummyData.favoriteMoviesEntity)
+            Mockito.verify(localDataSource).getFavoriteMovies()
+            assertNotNull(moviesEntity)
+            assertEquals(DummyData.favoriteMoviesEntity.size, moviesEntity.size)
+        }
+    }
+
+    @Test
+    fun getFavoriteShows() {
+        mainCoroutineRule.testDispatcher.runBlockingTest {
+            val dataSourceFactory = mock<DataSource.Factory<Int, FavoriteShowEntity>>()
+            Mockito.`when`(localDataSource.getFavoriteShows()).thenReturn(dataSourceFactory)
+            repository.getFavoriteShows()
+
+            val showsEntity = PagedListUtil.mockPagedList(DummyData.favoriteShowsEntity)
+            Mockito.verify(localDataSource).getFavoriteShows()
+            assertNotNull(showsEntity)
+            assertEquals(DummyData.favoriteShowsEntity.size, showsEntity.size)
         }
     }
 }

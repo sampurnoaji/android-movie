@@ -1,14 +1,12 @@
-package com.example.movie.ui.list.movie
+package com.example.movie.ui.favorite.movie
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
+import com.example.movie.data.source.local.entity.FavoriteMovieEntity
 import com.example.movie.domain.MovieRepository
-import com.example.movie.domain.entity.Movie
 import com.example.movie.utils.MainCoroutineRule
-import com.example.movie.utils.database.SortUtil
-import com.example.movie.vo.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
@@ -20,7 +18,7 @@ import org.mockito.Mockito
 import org.mockito.kotlin.mock
 
 @ExperimentalCoroutinesApi
-class MoviesViewModelTest {
+class FavoriteMovieViewModelTest {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -28,36 +26,38 @@ class MoviesViewModelTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    private lateinit var vm: MoviesViewModel
+    private lateinit var vm: FavoriteMovieViewModel
 
     private var repository = mock<MovieRepository>()
-    private var observer = mock<Observer<Resource<PagedList<Movie>>>>()
-    private var pagedList = mock<PagedList<Movie>>()
-
-    private val sort = SortUtil.NEWEST
-
+    private var observer = mock<Observer<PagedList<FavoriteMovieEntity>>>()
+    private var pagedList = mock<PagedList<FavoriteMovieEntity>>()
+    
     @Before
     fun setUp() {
-        vm = MoviesViewModel(repository)
+        vm = FavoriteMovieViewModel(repository)
     }
 
     @Test
-    fun getMovies() {
+    fun getFavoriteMovies() {
         mainCoroutineRule.testDispatcher.runBlockingTest {
-            val dummyMovies = Resource.success(pagedList)
-            Mockito.`when`(dummyMovies.data?.size).thenReturn(5)
+            val dummyMovies = pagedList
+            Mockito.`when`(dummyMovies.size).thenReturn(5)
 
-            val movies = MutableLiveData<Resource<PagedList<Movie>>>()
+            val movies = MutableLiveData<PagedList<FavoriteMovieEntity>>()
             movies.value = dummyMovies
-            Mockito.`when`(repository.getMovies(sort)).thenReturn(movies)
+            Mockito.`when`(repository.getFavoriteMovies()).thenReturn(movies)
 
-            val moviesResult = vm.getMovies(sort).value?.data
-            Mockito.verify(repository).getMovies(sort)
+            val moviesResult = vm.getFavoriteMovies().value
+            Mockito.verify(repository).getFavoriteMovies()
             assertNotNull(moviesResult)
             assertEquals(5, moviesResult?.size)
 
-            vm.getMovies(sort).observeForever(observer)
+            vm.getFavoriteMovies().observeForever(observer)
             Mockito.verify(observer).onChanged(dummyMovies)
         }
+    }
+
+    @Test
+    fun deleteFavoriteMovie() {
     }
 }
