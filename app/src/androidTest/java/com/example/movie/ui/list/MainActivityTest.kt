@@ -8,12 +8,15 @@ import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.rule.ActivityTestRule
 import com.example.movie.R
 import com.example.movie.ui.detail.movie.MovieDetailActivity
 import com.example.movie.ui.detail.show.ShowDetailActivity
+import com.example.movie.ui.favorite.FavoriteActivity
 import com.example.movie.utils.DataDummy
 import com.example.movie.utils.DummyData
 import com.example.movie.utils.EspressoIdlingResource
@@ -37,6 +40,9 @@ class MainActivityTest {
 
     @get:Rule
     val activityRuleShowDetail = ActivityTestRule(ShowDetailActivity::class.java, false, false)
+
+    @get:Rule
+    var activityFavoriteRule = ActivityTestRule(FavoriteActivity::class.java, false, false)
 
     @Before
     fun setUp() {
@@ -73,6 +79,19 @@ class MainActivityTest {
     }
 
     @Test
+    fun loadFavoriteMovies() {
+        val intent = Intent()
+        activityFavoriteRule.launchActivity(intent)
+
+        Espresso.onView(withId(R.id.tabs))
+            .check(ViewAssertions.matches(isDisplayed()))
+        Espresso.onView(withId(R.id.rvMovies))
+            .check(ViewAssertions.matches(isDisplayed()))
+        Espresso.onView(withId(R.id.rvMovies))
+            .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyMovies.size))
+    }
+
+    @Test
     fun loadShows() {
         Espresso.onView(withId(R.id.tabs))
             .check(ViewAssertions.matches(isDisplayed()))
@@ -95,5 +114,19 @@ class MainActivityTest {
         Espresso.onView(withId(R.id.detail_title))
             .check(ViewAssertions.matches(isDisplayed()))
         Espresso.onView(allOf(withId(R.id.detail_title), not(withText(""))))
+    }
+
+    @Test
+    fun loadFavoriteShows() {
+        val intent = Intent()
+        activityFavoriteRule.launchActivity(intent)
+
+        Espresso.onView(withId(R.id.tabs))
+            .check(ViewAssertions.matches(isDisplayed()))
+        Espresso.onView(withText("TV SHOW")).perform(ViewActions.click())
+        Espresso.onView(withId(R.id.rvShows))
+            .check(ViewAssertions.matches(isDisplayed()))
+        Espresso.onView(withId(R.id.rvShows))
+            .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyShows.size))
     }
 }

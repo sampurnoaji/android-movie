@@ -11,12 +11,17 @@ Menampilkan data detail movie
 - Memastikan TextView untuk vote average tampil sesuai dengan yang diharapkan.
 - Memastikan TextView untuk popularity tampil sesuai dengan yang diharapkan.
 - Memastikan TextView untuk overview tampil sesuai dengan yang diharapkan.
+Menampilkan data movie favorit
+- Memberi tindakan untuk pindah ke halaman favorit
+- Memastikan tab dalam keadaan tampil.
+- Memastikan rvMovies dalam keadaan tampil.
+- Gulir rvMovies ke posisi data terakhir.
 
 Menampilkan data tv show
 - Memastikan tab dalam keadaan tampil.
 - Memberi tindakan klik pada tab TV Show
-- Memastikan rvMovies dalam keadaan tampil.
-- Gulir rvMovies ke posisi data terakhir.
+- Memastikan rvShows dalam keadaan tampil.
+- Gulir rvShows ke posisi data terakhir.
 Menampilkan data detail tv show
 - Memastikan tab dalam keadaan tampil.
 - Memberi tindakan klik pada tab TV Show
@@ -27,3 +32,9 @@ Menampilkan data detail tv show
 - Memastikan TextView untuk vote average tampil sesuai dengan yang diharapkan.
 - Memastikan TextView untuk popularity tampil sesuai dengan yang diharapkan.
 - Memastikan TextView untuk overview tampil sesuai dengan yang diharapkan.
+Menampilkan data tv show favorit
+- Memberi tindakan untuk pindah ke halaman favorit
+- Memastikan tab dalam keadaan tampil.
+- Memberi tindakan klik pada tab TV Show
+- Memastikan rvShows dalam keadaan tampil.
+- Gulir rvShows ke posisi data terakhir.
