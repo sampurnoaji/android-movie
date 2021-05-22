@@ -34,8 +34,9 @@ class LocalDataSource(private val movieDao: MovieDao) {
 
 
 
-    fun getShows(): DataSource.Factory<Int, ShowEntity> {
-        return movieDao.getShows()
+    fun getShows(sort: String): DataSource.Factory<Int, ShowEntity> {
+        val query = SortUtil.getSortedQuery(DatabaseConstant.ENTITY_SHOW, "first_air_date", sort)
+        return movieDao.getShows(query)
     }
 
     fun insertShows(movies: List<ShowEntity>) {

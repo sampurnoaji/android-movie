@@ -39,8 +39,8 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavoriteShow(favoriteShow: FavoriteShowEntity)
 
-    @Query("SELECT * FROM ${DatabaseConstant.ENTITY_SHOW}")
-    fun getShows(): DataSource.Factory<Int, ShowEntity>
+    @RawQuery(observedEntities = [ShowEntity::class])
+    fun getShows(query: SupportSQLiteQuery): DataSource.Factory<Int, ShowEntity>
 
     @Query("SELECT * FROM ${DatabaseConstant.ENTITY_FAVORITE_SHOW}")
     fun getFavoriteShows(): DataSource.Factory<Int, FavoriteShowEntity>

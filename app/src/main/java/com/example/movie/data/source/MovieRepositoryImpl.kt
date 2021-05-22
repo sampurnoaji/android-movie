@@ -102,7 +102,7 @@ class MovieRepositoryImpl(
         localDataSource.deleteFavoriteMovie(favoriteMovie)
     }
 
-    override suspend fun getShows(): LiveData<Resource<PagedList<Show>>> {
+    override suspend fun getShows(sort: String): LiveData<Resource<PagedList<Show>>> {
         return object : NetworkBoundResource<PagedList<Show>, ShowsResponse>(appExecutors) {
             override fun loadFromDb(): LiveData<PagedList<Show>> {
                 val config = PagedList.Config.Builder()
@@ -110,7 +110,7 @@ class MovieRepositoryImpl(
                     .setInitialLoadSizeHint(5)
                     .setPageSize(5)
                     .build()
-                val pagedShows = localDataSource.getShows().mapByPage {
+                val pagedShows = localDataSource.getShows(sort).mapByPage {
                     it.map { show ->
                         entityMapper.showsEntityMapper(show)
                     }

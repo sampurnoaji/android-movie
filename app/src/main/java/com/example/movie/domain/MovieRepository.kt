@@ -19,7 +19,7 @@ interface MovieRepository {
     suspend fun insertFavoriteMovie(favoriteMovie: FavoriteMovieEntity)
     suspend fun deleteFavoriteMovie(favoriteMovie: FavoriteMovieEntity)
 
-    suspend fun getShows(): LiveData<Resource<PagedList<Show>>>
+    suspend fun getShows(sort: String): LiveData<Resource<PagedList<Show>>>
     suspend fun getFavoriteShows(): LiveData<PagedList<FavoriteShowEntity>>
     suspend fun getShowDetail(showId: Int): Flow<LoadResult<ShowDetail>>
     suspend fun insertFavoriteShow(favoriteShow: FavoriteShowEntity)
