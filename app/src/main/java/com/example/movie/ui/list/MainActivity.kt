@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.movie.R
@@ -44,8 +43,6 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, FavoriteActivity::class.java)
                 startActivity(intent)
             }
-            R.id.action_newest -> Toast.makeText(this, "new", Toast.LENGTH_SHORT).show()
-            R.id.action_oldest -> Toast.makeText(this, "old", Toast.LENGTH_SHORT).show()
         }
         return super.onOptionsItemSelected(item)
     }

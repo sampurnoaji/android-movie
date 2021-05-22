@@ -3,8 +3,9 @@ package com.example.movie.data.source.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.movie.utils.database.DatabaseConstant
 
-@Entity(tableName = "favorite_show_entities")
+@Entity(tableName = DatabaseConstant.ENTITY_FAVORITE_SHOW)
 data class FavoriteShowEntity(
     @ColumnInfo(name = "first_air_date")
     val firstAirDate: String? = null,

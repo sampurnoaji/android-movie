@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.example.movie.data.source.local.room.MovieDao
 import com.example.movie.data.source.local.room.MovieDatabase
+import com.example.movie.utils.database.DatabaseConstant
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
@@ -13,7 +14,7 @@ val databaseModule = module {
 }
 
 fun provideDatabase(application: Application): MovieDatabase {
-    return Room.databaseBuilder(application, MovieDatabase::class.java, "movie-db")
+    return Room.databaseBuilder(application, MovieDatabase::class.java, DatabaseConstant.DATABASE)
         .fallbackToDestructiveMigration()
         .build()
 }

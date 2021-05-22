@@ -36,7 +36,7 @@ class MovieRepositoryImpl(
     private val responseMapper: ResponseMapper
 ) : MovieRepository {
 
-    override suspend fun getMovies(): LiveData<Resource<PagedList<Movie>>> {
+    override suspend fun getMovies(sort: String): LiveData<Resource<PagedList<Movie>>> {
         return object : NetworkBoundResource<PagedList<Movie>, MoviesResponse>(appExecutors) {
             override fun loadFromDb(): LiveData<PagedList<Movie>> {
                 val config = PagedList.Config.Builder()
@@ -44,7 +44,7 @@ class MovieRepositoryImpl(
                     .setInitialLoadSizeHint(5)
                     .setPageSize(5)
                     .build()
-                val pagedMovies = localDataSource.getMovies().mapByPage {
+                val pagedMovies = localDataSource.getMovies(sort).mapByPage {
                     it.map { movie ->
                         entityMapper.moviesEntityMapper(movie)
                     }

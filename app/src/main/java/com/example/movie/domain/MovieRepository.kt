@@ -13,7 +13,7 @@ import com.example.movie.vo.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
-    suspend fun getMovies(): LiveData<Resource<PagedList<Movie>>>
+    suspend fun getMovies(sort: String): LiveData<Resource<PagedList<Movie>>>
     suspend fun getFavoriteMovies(): LiveData<PagedList<FavoriteMovieEntity>>
     suspend fun getMovieDetail(movieId: Int): Flow<LoadResult<MovieDetail>>
     suspend fun insertFavoriteMovie(favoriteMovie: FavoriteMovieEntity)

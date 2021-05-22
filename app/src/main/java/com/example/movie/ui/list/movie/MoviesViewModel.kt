@@ -5,5 +5,5 @@ import com.example.movie.domain.MovieRepository
 
 class MoviesViewModel(private val repository: MovieRepository) : ViewModel() {
 
-    suspend fun getMovies() = repository.getMovies()
+    suspend fun getMovies(sort: String) = repository.getMovies(sort)
 }

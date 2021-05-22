@@ -6,15 +6,4 @@
         android:icon="@drawable/ic_baseline_favorite_24"
         android:title="@string/favorite"
         app:showAsAction="always" />
-
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/action_newest"
-            android:checked="true"
-            android:title="@string/newest" />
-        <item
-            android:id="@+id/action_oldest"
-            android:checked="false"
-            android:title="@string/oldest" />
-    </group>
 </menu>

@@ -3,8 +3,9 @@ package com.example.movie.data.source.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.movie.utils.database.DatabaseConstant
 
-@Entity(tableName = "show_entities")
+@Entity(tableName = DatabaseConstant.ENTITY_SHOW)
 data class ShowEntity(
     @ColumnInfo(name = "backdrop_path")
     val backdropPath: String? = null,
