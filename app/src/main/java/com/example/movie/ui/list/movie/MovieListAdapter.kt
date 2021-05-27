@@ -2,27 +2,36 @@ package com.example.movie.ui.list.movie
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movie.databinding.ItemsMovieBinding
-import com.example.movie.domain.Movie
+import com.example.movie.domain.entity.Movie
 import com.example.movie.utils.formatDate
 import com.example.movie.utils.loadPoster
 
-class MovieListAdapter(
-    private val movies: List<Movie>,
-    private val listener: MovieItemListener
-) : RecyclerView.Adapter<MovieListAdapter.ContentViewHolder>() {
+class MovieListAdapter(private val listener: MovieItemListener) :
+    PagedListAdapter<Movie, MovieListAdapter.ContentViewHolder>(DIFF_CALLBACK) {
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
+            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
         return ContentViewHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: ContentViewHolder, position: Int) {
-        holder.bind(movies[position], listener)
-    }
-
-    override fun getItemCount(): Int {
-        return movies.size
+        val movie = getItem(position) ?: return
+        holder.bind(movie, listener)
     }
 
     class ContentViewHolder(private val binding: ItemsMovieBinding) :

@@ -5,18 +5,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.movie.R
 import com.example.movie.databinding.ActivityMovieDetailBinding
-import com.example.movie.domain.MovieDetail
+import com.example.movie.domain.entity.MovieDetail
 import com.example.movie.utils.formatDate
 import com.example.movie.utils.gone
 import com.example.movie.utils.loadPoster
 import com.example.movie.utils.visible
 import com.example.movie.vo.LoadResult
+import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MovieDetailActivity : AppCompatActivity() {
+class MovieDetailActivity : AppCompatActivity(R.layout.activity_movie_detail) {
 
-    private lateinit var binding: ActivityMovieDetailBinding
+    private val binding: ActivityMovieDetailBinding by viewBinding()
     private val vm: MovieDetailViewModel by viewModel()
 
     companion object {
@@ -32,8 +35,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMovieDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
@@ -43,12 +45,22 @@ class MovieDetailActivity : AppCompatActivity() {
             vm.setSelectedMovie(it)
             vm.getMovieDetail()
         }
+        observeMovieDetailResult()
+
+        binding.fabAddToFavorite.setOnClickListener {
+            vm.insertFavoriteMovie()
+            Snackbar.make(it, getString(R.string.add_movie_to_favorite), Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun observeMovieDetailResult() {
         vm.movieDetailResult.observe(this) {
             when (it) {
                 is LoadResult.Loading -> binding.progressBar.visible()
                 is LoadResult.Success -> {
                     binding.progressBar.gone()
                     populateMovie(it.data)
+                    vm.movieDetail = it.data
                 }
                 is LoadResult.Error -> {
                     binding.progressBar.gone()

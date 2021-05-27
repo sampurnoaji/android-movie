@@ -1,18 +1,17 @@
-package com.example.movie.domain
+package com.example.movie.domain.entity
 
-data class Movie(
-    val adult: Boolean,
+data class Show(
     val backdropPath: String,
-    val genreIds: List<Int?>,
+    val firstAirDate: String,
+    val genreIds: List<Int>,
     val id: Int,
+    val name: String,
+    val originCountry: List<String>,
     val originalLanguage: String,
-    val originalTitle: String,
+    val originalName: String,
     val overview: String,
     val popularity: Float,
     val posterPath: String,
-    val releaseDate: String,
-    val title: String,
-    val video: Boolean,
     val voteAverage: Float,
     val voteCount: Int
 )

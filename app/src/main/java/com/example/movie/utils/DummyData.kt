@@ -1,24 +1,28 @@
 package com.example.movie.utils
 
-import com.example.movie.data.source.remote.response.MovieDetailDto
-import com.example.movie.data.source.remote.response.MoviesDto
-import com.example.movie.data.source.remote.response.ShowDetailDto
-import com.example.movie.data.source.remote.response.ShowsDto
-import com.example.movie.domain.Movie
-import com.example.movie.domain.MovieDetail
-import com.example.movie.domain.Show
-import com.example.movie.domain.ShowDetail
+import com.example.movie.data.source.local.entity.FavoriteMovieEntity
+import com.example.movie.data.source.local.entity.FavoriteShowEntity
+import com.example.movie.data.source.local.entity.MovieEntity
+import com.example.movie.data.source.local.entity.ShowEntity
+import com.example.movie.data.source.remote.response.MovieDetailResponse
+import com.example.movie.data.source.remote.response.MoviesResponse
+import com.example.movie.data.source.remote.response.ShowDetailResponse
+import com.example.movie.data.source.remote.response.ShowsResponse
+import com.example.movie.domain.entity.Movie
+import com.example.movie.domain.entity.MovieDetail
+import com.example.movie.domain.entity.Show
+import com.example.movie.domain.entity.ShowDetail
 
 object DummyData {
-    val moviesDto = MoviesDto(
+    val moviesDto = MoviesResponse(
         results = listOf(
-            MoviesDto.Result(
+            MoviesResponse.Result(
                 id = 1
             )
         )
     )
 
-    val movieDetailDto = MovieDetailDto(id = 567189)
+    val movieDetailDto = MovieDetailResponse(id = 567189)
 
     val movies = listOf(
         Movie(
@@ -51,15 +55,43 @@ object DummyData {
         voteCount = 0
     )
 
-    val showsDto = ShowsDto(
+    val moviesEntity = listOf(
+        MovieEntity(
+            adult = false,
+            backdropPath = "",
+            id = 0,
+            originalLanguage = "",
+            originalTitle = "",
+            overview = "",
+            popularity = 0f,
+            posterPath = "",
+            releaseDate = "",
+            title = "",
+            video = false,
+            voteAverage = 0f,
+            voteCount = 0
+        )
+    )
+
+    val favoriteMoviesEntity = listOf(
+        FavoriteMovieEntity(
+            id = 0,
+            title = "",
+            releaseDate = "",
+            posterPath = "",
+            overview = ""
+        )
+    )
+
+    val showsDto = ShowsResponse(
         results = listOf(
-            ShowsDto.Result(
+            ShowsResponse.Result(
                 id = 1
             )
         )
     )
 
-    val showDetailDto = ShowDetailDto(id = 88396)
+    val showDetailDto = ShowDetailResponse(id = 88396)
 
     val shows = listOf(
         Show(
@@ -89,5 +121,31 @@ object DummyData {
         name = "",
         voteAverage = 0f,
         voteCount = 0
+    )
+
+    val showsEntity = listOf(
+        ShowEntity(
+            backdropPath = "",
+            firstAirDate = "",
+            id = 0,
+            name = "",
+            originalLanguage = "",
+            originalName = "",
+            overview = "",
+            popularity = 0f,
+            posterPath = "",
+            voteAverage = 0f,
+            voteCount = 0
+        )
+    )
+
+    val favoriteShowsEntity = listOf(
+        FavoriteShowEntity(
+            id = 0,
+            name = "",
+            firstAirDate = "",
+            posterPath = "",
+            overview = ""
+        )
     )
 }

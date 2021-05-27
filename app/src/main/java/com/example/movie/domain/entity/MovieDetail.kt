@@ -1,13 +1,13 @@
-package com.example.movie.domain
+package com.example.movie.domain.entity
 
-data class ShowDetail(
-    val firstAirDate: String,
+data class MovieDetail(
     val id: Int,
-    val name: String,
     val originalLanguage: String,
     val overview: String,
     val popularity: Float,
     val posterPath: String,
+    val releaseDate: String,
+    val title: String,
     val voteAverage: Float,
     val voteCount: Int
 )
