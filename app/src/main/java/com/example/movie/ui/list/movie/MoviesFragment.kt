@@ -1,15 +1,15 @@
 package com.example.movie.ui.list.movie
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.movie.R
 import com.example.movie.databinding.FragmentMoviesBinding
 import com.example.movie.domain.entity.Movie
 import com.example.movie.ui.detail.movie.MovieDetailActivity
@@ -21,18 +21,10 @@ import com.example.movie.vo.Status
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MoviesFragment : Fragment(), MovieListAdapter.MovieItemListener {
+class MoviesFragment : Fragment(R.layout.fragment_movies), MovieListAdapter.MovieItemListener {
 
-    private lateinit var binding: FragmentMoviesBinding
+    private val binding: FragmentMoviesBinding by viewBinding()
     private val vm: MoviesViewModel by viewModel()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentMoviesBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
