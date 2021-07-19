@@ -9,6 +9,8 @@ val repositoryModule = module {
     factory { AppExecutors() }
     single<MovieRepository> {
         MovieRepositoryImpl(
+            movieRemoteDataSource = get(),
+            nowPlayingMapper = get(),
             remoteDataSource = get(),
             localDataSource = get(),
             appExecutors = get(),

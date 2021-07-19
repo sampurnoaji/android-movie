@@ -8,6 +8,7 @@ val appModule = loadKoinModules(
         networkModule,
         dataSourceModule,
         repositoryModule,
+        useCaseModule,
         mapperModule,
         viewModelModule
     )

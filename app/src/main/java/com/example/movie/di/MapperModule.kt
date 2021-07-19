@@ -1,6 +1,7 @@
 package com.example.movie.di
 
 import com.example.movie.data.mapper.EntityMapper
+import com.example.movie.data.mapper.NowPlayingMapper
 import com.example.movie.data.mapper.ResponseMapper
 import com.example.movie.data.mapper.entity.MoviesEntityMapper
 import com.example.movie.data.mapper.entity.ShowsEntityMapper
@@ -11,6 +12,8 @@ import com.example.movie.data.mapper.response.ShowsResponseMapper
 import org.koin.dsl.module
 
 val mapperModule = module {
+    factory { NowPlayingMapper() }
+
     factory { MoviesResponseMapper() }
     factory { MovieDetailResponseMapper() }
     factory { ShowsResponseMapper() }

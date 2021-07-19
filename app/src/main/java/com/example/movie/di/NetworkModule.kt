@@ -2,6 +2,7 @@ package com.example.movie.di
 
 import com.example.movie.BuildConfig
 import com.example.movie.data.service.ApiService
+import com.example.movie.data.service.MovieService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -11,6 +12,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 val networkModule = module {
     single { provideOkHttpClient() }
     single { provideRetrofit(get()) }
+    single { provideMovieService(get()) }
     single { provideApiService(get()) }
 }
 
@@ -33,3 +35,6 @@ private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
 
 private fun provideApiService(retrofit: Retrofit): ApiService =
     retrofit.create(ApiService::class.java)
+
+private fun provideMovieService(retrofit: Retrofit): MovieService =
+    retrofit.create(MovieService::class.java)

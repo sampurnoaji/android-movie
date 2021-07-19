@@ -18,4 +18,5 @@
     <string name="delete">Delete</string>
     <string name="add_movie_to_favorite">Adding movie…</string>
     <string name="add_show_to_favorite">Adding show…</string>
+    <string name="now_playing">Now Playing</string>
 </resources>

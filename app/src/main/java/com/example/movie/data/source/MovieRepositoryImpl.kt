@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.movie.data.mapper.EntityMapper
+import com.example.movie.data.mapper.NowPlayingMapper
 import com.example.movie.data.mapper.ResponseMapper
 import com.example.movie.data.source.local.LocalDataSource
 import com.example.movie.data.source.local.entity.FavoriteMovieEntity
@@ -15,12 +16,14 @@ import com.example.movie.data.source.remote.response.ShowsResponse
 import com.example.movie.domain.MovieRepository
 import com.example.movie.domain.entity.Movie
 import com.example.movie.domain.entity.MovieDetail
+import com.example.movie.domain.entity.NowPlaying
 import com.example.movie.domain.entity.Show
 import com.example.movie.domain.entity.ShowDetail
 import com.example.movie.utils.AppExecutors
 import com.example.movie.vo.ApiResponse
 import com.example.movie.vo.LoadResult
 import com.example.movie.vo.Resource
+import io.android.momobill.vo.Either
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -29,12 +32,21 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class MovieRepositoryImpl(
+    private val movieRemoteDataSource: MovieRemoteDataSource,
+    private val nowPlayingMapper: NowPlayingMapper,
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors,
     private val entityMapper: EntityMapper,
     private val responseMapper: ResponseMapper
 ) : MovieRepository {
+
+    override suspend fun getNowPlaying(): Either<Exception, List<NowPlaying>> {
+        return when (val result = movieRemoteDataSource.getNowPlaying()) {
+            is Either.Success -> Either.Success(nowPlayingMapper.toDomain(result.data))
+            is Either.Failure -> Either.Failure(result.cause)
+        }
+    }
 
     override suspend fun getMovies(sort: String): LiveData<Resource<PagedList<Movie>>> {
         return object : NetworkBoundResource<PagedList<Movie>, MoviesResponse>(appExecutors) {

@@ -39,12 +39,17 @@ android {
     }
 }
 
+ext {
+    lifecycle = "2.3.1"
+}
+
 dependencies {
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$coreVersion"
 
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle"
 
     //di
     implementation "io.insert-koin:koin-android:$koinVersion"
