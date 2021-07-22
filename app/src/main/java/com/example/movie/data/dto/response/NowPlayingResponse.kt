@@ -1,4 +1,4 @@
-package com.example.movie.data.dto
+package com.example.movie.data.dto.response
 
 
 import com.squareup.moshi.Json

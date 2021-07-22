@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.example.movie.data.dto.response.NowPlayingResponse
 import com.example.movie.data.mapper.EntityMapper
 import com.example.movie.data.mapper.NowPlayingMapper
 import com.example.movie.data.mapper.ResponseMapper
@@ -20,10 +21,10 @@ import com.example.movie.domain.entity.NowPlaying
 import com.example.movie.domain.entity.Show
 import com.example.movie.domain.entity.ShowDetail
 import com.example.movie.utils.AppExecutors
+import com.example.movie.utils.Either
 import com.example.movie.vo.ApiResponse
 import com.example.movie.vo.LoadResult
 import com.example.movie.vo.Resource
-import io.android.momobill.vo.Either
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -41,11 +42,25 @@ class MovieRepositoryImpl(
     private val responseMapper: ResponseMapper
 ) : MovieRepository {
 
-    override suspend fun getNowPlaying(): Either<Exception, List<NowPlaying>> {
-        return when (val result = movieRemoteDataSource.getNowPlaying()) {
-            is Either.Success -> Either.Success(nowPlayingMapper.toDomain(result.data))
-            is Either.Failure -> Either.Failure(result.cause)
-        }
+    override suspend fun getNowPlaying(): Flow<List<NowPlaying>> {
+        return object : Nbr<List<NowPlaying>, NowPlayingResponse>() {
+            override suspend fun saveCallResult(response: NowPlayingResponse) {
+                localDataSource.insertNowPlaying(nowPlayingMapper.toEntity(response))
+            }
+
+            override fun shouldFetch(data: List<NowPlaying>?): Boolean {
+                return data == null || data.isEmpty()
+            }
+
+            override suspend fun loadFromDb(): List<NowPlaying> {
+                val result = localDataSource.getNowPlaying()
+                return nowPlayingMapper.toDomain(result)
+            }
+
+            override suspend fun createCall(): Either<Exception, NowPlayingResponse> {
+                return movieRemoteDataSource.getNowPlaying()
+            }
+        }.asFlow()
     }
 
     override suspend fun getMovies(sort: String): LiveData<Resource<PagedList<Movie>>> {

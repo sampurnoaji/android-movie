@@ -1,4 +1,4 @@
-package io.android.momobill.vo
+package com.example.movie.utils
 
 sealed class ViewState<out T> {
     object Loading : ViewState<Nothing>()

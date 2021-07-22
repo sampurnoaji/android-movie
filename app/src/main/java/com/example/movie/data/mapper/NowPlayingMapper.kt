@@ -1,15 +1,15 @@
 package com.example.movie.data.mapper
 
-import com.example.movie.data.dto.NowPlayingResponse
+import com.example.movie.data.dto.entity.NowPlayingEntity
+import com.example.movie.data.dto.response.NowPlayingResponse
 import com.example.movie.domain.entity.NowPlaying
 
 class NowPlayingMapper {
-    fun toDomain(dto: NowPlayingResponse): List<NowPlaying> {
+    fun toEntity(dto: NowPlayingResponse): List<NowPlayingEntity> {
         return dto.results?.map { result ->
-            NowPlaying(
+            NowPlayingEntity(
                 adult = result?.adult ?: false,
                 backdropPath = result?.backdropPath.orEmpty(),
-                genreIds = result?.genreIds?.map { it ?: 0 } ?: emptyList(),
                 id = result?.id ?: 0,
                 originalLanguage = result?.originalLanguage.orEmpty(),
                 originalTitle = result?.originalTitle.orEmpty(),
@@ -23,5 +23,26 @@ class NowPlayingMapper {
                 voteCount = result?.voteCount ?: 0
             )
         } ?: emptyList()
+    }
+
+    fun toDomain(entities: List<NowPlayingEntity>): List<NowPlaying> {
+        return entities.map { result ->
+            NowPlaying(
+                adult = result.adult,
+                backdropPath = result.backdropPath,
+                genreIds = emptyList(),
+                id = result.id,
+                originalLanguage = result.originalLanguage,
+                originalTitle = result.originalTitle,
+                overview = result.overview,
+                popularity = result.popularity,
+                posterPath = result.posterPath,
+                releaseDate = result.releaseDate,
+                title = result.title,
+                video = result.video,
+                voteAverage = result.voteAverage,
+                voteCount = result.voteCount
+            )
+        }
     }
 }

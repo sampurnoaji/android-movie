@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movie.databinding.ActivityMainBinding
+import com.example.movie.utils.ViewState
 import com.example.movie.utils.delegate.viewBinding
 import com.example.movie.utils.gone
 import com.example.movie.utils.visible
-import io.android.momobill.vo.ViewState
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {

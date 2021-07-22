@@ -1,6 +1,6 @@
 package com.example.movie.data.service
 
-import com.example.movie.data.dto.NowPlayingResponse
+import com.example.movie.data.dto.response.NowPlayingResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

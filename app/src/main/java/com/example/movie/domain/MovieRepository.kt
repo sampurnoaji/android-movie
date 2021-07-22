@@ -11,11 +11,10 @@ import com.example.movie.domain.entity.Show
 import com.example.movie.domain.entity.ShowDetail
 import com.example.movie.vo.LoadResult
 import com.example.movie.vo.Resource
-import io.android.momobill.vo.Either
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
-    suspend fun getNowPlaying(): Either<Exception, List<NowPlaying>>
+    suspend fun getNowPlaying(): Flow<List<NowPlaying>>
 
     suspend fun getMovies(sort: String): LiveData<Resource<PagedList<Movie>>>
     suspend fun getFavoriteMovies(): LiveData<PagedList<FavoriteMovieEntity>>

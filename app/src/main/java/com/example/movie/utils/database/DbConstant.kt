@@ -1,7 +1,9 @@
 package com.example.movie.utils.database
 
-object DatabaseConstant {
+object DbConstant {
     const val DATABASE = "movie-db"
+
+    const val ENTITY_NOW_PLAYING = "now_playing"
 
     const val ENTITY_MOVIE = "movie_entity"
     const val ENTITY_FAVORITE_MOVIE = "favorite_movie_entity"
