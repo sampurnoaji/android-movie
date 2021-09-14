@@ -1,12 +1,12 @@
 package com.example.movie.ui.splash
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.movie.ui.list.MainActivity
 import com.example.movie.R
-import com.example.movie.utils.hideSystemUI
+import com.example.movie.ui.list.MainActivity
+import io.android.core.util.hideSystemUI
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

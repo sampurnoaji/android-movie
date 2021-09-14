@@ -4,10 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
-import com.example.movie.domain.MovieRepository
 import com.example.movie.utils.MainCoroutineRule
-import com.example.movie.utils.database.SortUtil
-import com.example.movie.vo.Resource
+import io.android.core.domain.repository.MovieRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals

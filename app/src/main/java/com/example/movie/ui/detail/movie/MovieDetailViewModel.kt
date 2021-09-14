@@ -1,6 +1,6 @@
 package com.example.movie.ui.detail.movie
 
 import androidx.lifecycle.ViewModel
-import com.example.movie.domain.MovieRepository
+import io.android.core.domain.repository.MovieRepository
 
 class MovieDetailViewModel(private val repository: MovieRepository) : ViewModel()

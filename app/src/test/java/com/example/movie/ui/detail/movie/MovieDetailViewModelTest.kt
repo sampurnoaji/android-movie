@@ -1,11 +1,10 @@
 package com.example.movie.ui.detail.movie
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.movie.domain.MovieRepository
 import com.example.movie.utils.DummyData
 import com.example.movie.utils.MainCoroutineRule
-import com.example.movie.utils.observerTest
 import com.example.movie.vo.LoadResult
+import io.android.core.domain.repository.MovieRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runBlockingTest

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.example.movie.data.source.local.entity.FavoriteMovieEntity
-import com.example.movie.domain.MovieRepository
 import com.example.movie.utils.MainCoroutineRule
+import io.android.core.domain.repository.MovieRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals

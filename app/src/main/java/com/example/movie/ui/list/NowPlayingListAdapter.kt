@@ -2,28 +2,22 @@ package com.example.movie.ui.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movie.databinding.ItemsNowPlayingBinding
-import com.example.movie.domain.entity.NowPlaying
-import com.example.movie.utils.loadPoster
+import io.android.core.domain.model.NowPlaying
+import io.android.core.util.loadPoster
 
-class NowPlayingListAdapter(private var movies: List<NowPlaying>) :
-    RecyclerView.Adapter<NowPlayingListAdapter.ContentViewHolder>() {
+class NowPlayingListAdapter :
+    ListAdapter<NowPlaying, NowPlayingListAdapter.ContentViewHolder>(DiffCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
         return ContentViewHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: ContentViewHolder, position: Int) {
-        holder.bind(movies[position])
-    }
-
-    override fun getItemCount(): Int {
-        return movies.size
-    }
-
-    fun refreshData(movies: List<NowPlaying>) {
-        this.movies = movies
-        notifyDataSetChanged()
+        holder.bind(currentList[position])
     }
 
     class ContentViewHolder(private val binding: ItemsNowPlayingBinding) :
@@ -40,6 +34,16 @@ class NowPlayingListAdapter(private var movies: List<NowPlaying>) :
             binding.imgPoster.loadPoster(nowPlaying.posterPath)
             binding.tvTitle.text = nowPlaying.title
             binding.tvVoteAvg.text = nowPlaying.voteAverage.toString()
+        }
+    }
+
+    class DiffCallback : DiffUtil.ItemCallback<NowPlaying>() {
+        override fun areItemsTheSame(oldItem: NowPlaying, newItem: NowPlaying): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: NowPlaying, newItem: NowPlaying): Boolean {
+            return oldItem == newItem
         }
     }
 }

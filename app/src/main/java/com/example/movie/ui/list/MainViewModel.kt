@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.example.movie.domain.entity.NowPlaying
-import com.example.movie.domain.usecase.GetNowPlayingUseCase
-import com.example.movie.utils.ViewState
+import io.android.core.domain.model.NowPlaying
+import io.android.core.domain.usecase.GetNowPlayingUseCase
+import io.android.core.vo.ViewState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 

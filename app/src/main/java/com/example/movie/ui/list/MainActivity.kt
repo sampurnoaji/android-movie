@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movie.databinding.ActivityMainBinding
-import com.example.movie.utils.ViewState
-import com.example.movie.utils.delegate.viewBinding
-import com.example.movie.utils.gone
-import com.example.movie.utils.visible
+import io.android.core.util.gone
+import io.android.core.util.viewBinding
+import io.android.core.util.visible
+import io.android.core.vo.ViewState
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
     private val binding by viewBinding(ActivityMainBinding::inflate)
     private val vm by viewModel<MainViewModel>()
 
-    private val nowPlayingListAdapter by lazy { NowPlayingListAdapter(emptyList()) }
+    private val nowPlayingListAdapter by lazy { NowPlayingListAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 is ViewState.Success -> {
                     binding.pgbNowPlaying.gone()
-                    nowPlayingListAdapter.refreshData(it.data)
+                    nowPlayingListAdapter.submitList(it.data)
                 }
                 is ViewState.Error -> {
                     binding.pgbNowPlaying.gone()
