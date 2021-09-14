@@ -1,5 +1,9 @@
 package io.android.core.domain.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class NowPlaying(
     val adult: Boolean,
     val backdropPath: String,
@@ -15,4 +19,4 @@ data class NowPlaying(
     val video: Boolean,
     val voteAverage: Float,
     val voteCount: Int
-)
+): Parcelable

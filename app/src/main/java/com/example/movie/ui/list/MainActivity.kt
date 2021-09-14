@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movie.databinding.ActivityMainBinding
+import com.example.movie.ui.detail.movie.MovieDetailActivity
 import io.android.core.util.gone
 import io.android.core.util.viewBinding
 import io.android.core.util.visible
@@ -51,6 +52,9 @@ class MainActivity : AppCompatActivity() {
                 false
             )
             adapter = nowPlayingListAdapter
+        }
+        nowPlayingListAdapter.onItemClick = { nowPlaying ->
+            MovieDetailActivity.start(this, nowPlaying)
         }
     }
 }

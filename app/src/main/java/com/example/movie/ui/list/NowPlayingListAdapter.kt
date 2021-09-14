@@ -12,12 +12,14 @@ import io.android.core.util.loadPoster
 class NowPlayingListAdapter :
     ListAdapter<NowPlaying, NowPlayingListAdapter.ContentViewHolder>(DiffCallback()) {
 
+    var onItemClick: ((NowPlaying) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
         return ContentViewHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: ContentViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        holder.bind(currentList[position], onItemClick)
     }
 
     class ContentViewHolder(private val binding: ItemsNowPlayingBinding) :
@@ -30,10 +32,14 @@ class NowPlayingListAdapter :
             }
         }
 
-        fun bind(nowPlaying: NowPlaying) {
-            binding.imgPoster.loadPoster(nowPlaying.posterPath)
-            binding.tvTitle.text = nowPlaying.title
-            binding.tvVoteAvg.text = nowPlaying.voteAverage.toString()
+        fun bind(nowPlaying: NowPlaying, onItemClick: ((NowPlaying) -> Unit)?) {
+            with(binding) {
+                imgPoster.loadPoster(nowPlaying.posterPath)
+                tvTitle.text = nowPlaying.title
+                tvVoteAvg.text = nowPlaying.voteAverage.toString()
+
+                container.setOnClickListener { onItemClick?.invoke(nowPlaying) }
+            }
         }
     }
 
