@@ -14,7 +14,10 @@ abstract class Nbr<ResultType, RequestType> {
         val dbSource = loadFromDb()
         if (shouldFetch(dbSource)) {
             when (val result = createCall()) {
-                is Either.Success -> saveCallResult(result.data)
+                is Either.Success -> {
+                    saveCallResult(result.data)
+                    emit(loadFromDb())
+                }
                 is Either.Failure -> onFetchFailed(result.cause)
             }
         } else {

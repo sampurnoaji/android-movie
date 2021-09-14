@@ -11,11 +11,7 @@ val repositoryModule = module {
         MovieRepositoryImpl(
             movieRemoteDataSource = get(),
             nowPlayingMapper = get(),
-            remoteDataSource = get(),
-            localDataSource = get(),
-            appExecutors = get(),
-            responseMapper = get(),
-            entityMapper = get()
+            localDataSource = get()
         )
     }
 }

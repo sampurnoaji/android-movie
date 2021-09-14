@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.example.movie.domain.MovieRepository
-import com.example.movie.domain.entity.Show
 import com.example.movie.utils.MainCoroutineRule
 import com.example.movie.utils.database.SortUtil
 import com.example.movie.vo.Resource

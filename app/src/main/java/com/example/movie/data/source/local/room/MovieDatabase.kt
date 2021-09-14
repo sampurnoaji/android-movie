@@ -3,18 +3,11 @@ package com.example.movie.data.source.local.room
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.movie.data.dto.entity.NowPlayingEntity
-import com.example.movie.data.source.local.entity.FavoriteMovieEntity
-import com.example.movie.data.source.local.entity.FavoriteShowEntity
-import com.example.movie.data.source.local.entity.MovieEntity
-import com.example.movie.data.source.local.entity.ShowEntity
 
 @Database(
     entities = [
-        NowPlayingEntity::class,
-        MovieEntity::class,
-        FavoriteMovieEntity::class,
-        ShowEntity::class,
-        FavoriteShowEntity::class],
+        NowPlayingEntity::class
+    ],
     version = 1,
     exportSchema = false
 )
