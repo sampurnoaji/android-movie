@@ -18,7 +18,8 @@ class MainViewModel(private val getNowPlayingUseCase: GetNowPlayingUseCase) : Vi
     fun getNowPlaying() {
         _nowPlaying.value = ViewState.Loading
         viewModelScope.launch {
-            getNowPlayingUseCase().collect {
+            getNowPlayingUseCase()
+                .collect {
                 _nowPlaying.value = ViewState.Success(it)
             }
         }

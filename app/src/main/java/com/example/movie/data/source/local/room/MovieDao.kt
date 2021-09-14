@@ -25,6 +25,8 @@ interface MovieDao {
     suspend fun getNowPlaying(): List<NowPlayingEntity>
 
 
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovies(movies: List<MovieEntity>)
 

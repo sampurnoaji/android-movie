@@ -39,7 +39,7 @@ class NowPlayingListAdapter(private var movies: List<NowPlaying>) :
         fun bind(nowPlaying: NowPlaying) {
             binding.imgPoster.loadPoster(nowPlaying.posterPath)
             binding.tvTitle.text = nowPlaying.title
-            binding.tvVoteAvg.text = "Vote: ${nowPlaying.voteAverage}"
+            binding.tvVoteAvg.text = nowPlaying.voteAverage.toString()
         }
     }
 }

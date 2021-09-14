@@ -1,5 +1,6 @@
 package com.example.movie.data.source
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
@@ -31,6 +32,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MovieRepositoryImpl(
     private val movieRemoteDataSource: MovieRemoteDataSource,
@@ -53,8 +55,11 @@ class MovieRepositoryImpl(
             }
 
             override suspend fun loadFromDb(): List<NowPlaying> {
-                val result = localDataSource.getNowPlaying()
-                return nowPlayingMapper.toDomain(result)
+                return withContext(Dispatchers.IO) {
+                    Log.d("Threadd", Thread.currentThread().name)
+                    val result = localDataSource.getNowPlaying()
+                    nowPlayingMapper.toDomain(result)
+                }
             }
 
             override suspend fun createCall(): Either<Exception, NowPlayingResponse> {
