@@ -44,7 +44,7 @@ class MovieRepositoryImpl(
     override suspend fun getFavoriteMovies(): Flow<List<NowPlaying>> {
         return flow {
             val movies = movieLocalDataSource.getFavoriteMovies()
-            nowPlayingMapper.toDomain(movies)
+            emit(nowPlayingMapper.toDomain(movies))
         }
     }
 

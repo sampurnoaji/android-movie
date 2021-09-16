@@ -16,13 +16,14 @@
     <application>
         <activity
             android:name=".ui.MovieFavoriteActivity"
-            android:exported="true" >
+            android:exported="true"
+            android:label="@string/favorite">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
                 <data
-                    android:scheme="movie"
-                    android:host="favorite"/>
+                    android:host="favorite"
+                    android:scheme="movie" />
             </intent-filter>
         </activity>
     </application>

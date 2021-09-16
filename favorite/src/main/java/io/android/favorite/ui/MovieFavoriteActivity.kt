@@ -2,7 +2,7 @@ package io.android.favorite.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movie.ui.detail.movie.MovieDetailActivity
 import io.android.core.util.gone
 import io.android.core.util.viewBinding
@@ -15,6 +15,10 @@ import org.koin.core.context.loadKoinModules
 
 class MovieFavoriteActivity : AppCompatActivity() {
 
+    companion object {
+        private const val GRID_SPAN = 2
+    }
+
     private val binding by viewBinding(ActivityMovieFavoriteBinding::inflate)
     private val vm by viewModel<MovieFavoriteViewModel>()
 
@@ -24,9 +28,14 @@ class MovieFavoriteActivity : AppCompatActivity() {
         loadKoinModules(favoriteModule)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        setupToolbar()
         setupRecyclerView()
 
         observeFavoritesResult()
+    }
+
+    override fun onResume() {
+        super.onResume()
         vm.getNowPlaying()
     }
 
@@ -47,12 +56,17 @@ class MovieFavoriteActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.toolbar.setNavigationOnClickListener { onBackPressed() }
+    }
+
     private fun setupRecyclerView() {
         binding.rvNowPlaying.apply {
-            layoutManager = LinearLayoutManager(
+            layoutManager = GridLayoutManager(
                 this@MovieFavoriteActivity,
-                LinearLayoutManager.HORIZONTAL,
-                false
+                GRID_SPAN
             )
             adapter = favoriteListAdapter
         }

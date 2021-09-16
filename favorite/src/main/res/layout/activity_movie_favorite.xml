@@ -12,6 +12,7 @@
         android:layout_height="?android:attr/actionBarSize"
         app:layout_constraintTop_toTopOf="parent">
         <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </com.google.android.material.appbar.AppBarLayout>
