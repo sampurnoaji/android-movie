@@ -4,8 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_movie_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.165" />
         <entry key="app/src/main/res/layout/items_now_playing.xml" value="0.45" />
+        <entry key="favorite/src/main/res/layout/activity_movie_favorite.xml" value="0.14361702127659576" />
+        <entry key="favorite/src/main/res/layout/item_list_favorite.xml" value="0.23505434782608695" />
       </map>
     </option>
   </component>

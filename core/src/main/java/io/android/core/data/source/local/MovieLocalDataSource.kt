@@ -11,4 +11,13 @@ class MovieLocalDataSource(private val movieDao: MovieDao) {
     suspend fun getNowPlaying(): List<NowPlayingEntity> {
         return movieDao.getNowPlaying()
     }
+
+    suspend fun getFavoriteMovies(): List<NowPlayingEntity> {
+        return movieDao.getFavoriteMovies()
+    }
+
+    suspend fun updateFavoriteMovie(movie: NowPlayingEntity, newState: Boolean) {
+        movie.isFavorite = newState
+        movieDao.updateFavoriteMovie(movie)
+    }
 }

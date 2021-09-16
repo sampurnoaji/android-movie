@@ -1,52 +1,44 @@
-package com.example.movie.ui.list
+package io.android.favorite.ui
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.movie.databinding.ActivityMainBinding
 import com.example.movie.ui.detail.movie.MovieDetailActivity
 import io.android.core.util.gone
 import io.android.core.util.viewBinding
 import io.android.core.util.visible
 import io.android.core.vo.ViewState
+import io.android.favorite.databinding.ActivityMovieFavoriteBinding
+import io.android.favorite.di.favoriteModule
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.context.loadKoinModules
 
-class MainActivity : AppCompatActivity() {
+class MovieFavoriteActivity : AppCompatActivity() {
 
-    private val binding by viewBinding(ActivityMainBinding::inflate)
-    private val vm by viewModel<MainViewModel>()
+    private val binding by viewBinding(ActivityMovieFavoriteBinding::inflate)
+    private val vm by viewModel<MovieFavoriteViewModel>()
 
-    private val nowPlayingListAdapter by lazy { NowPlayingListAdapter() }
+    private val favoriteListAdapter by lazy { FavoriteListAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        loadKoinModules(favoriteModule)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setupRecyclerView()
 
-        observeNowPlayingResult()
-
-        binding.fabFavorite.setOnClickListener {
-            val uri = Uri.parse("movie://favorite")
-            startActivity(Intent(Intent.ACTION_VIEW, uri))
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
+        observeFavoritesResult()
         vm.getNowPlaying()
     }
 
-    private fun observeNowPlayingResult() {
-        vm.nowPlaying.observe(this) {
+    private fun observeFavoritesResult() {
+        vm.favorites.observe(this) {
             when (it) {
                 is ViewState.Loading -> {
                     binding.pgbNowPlaying.visible()
                 }
                 is ViewState.Success -> {
                     binding.pgbNowPlaying.gone()
-                    nowPlayingListAdapter.submitList(it.data)
+                    favoriteListAdapter.submitList(it.data)
                 }
                 is ViewState.Error -> {
                     binding.pgbNowPlaying.gone()
@@ -58,14 +50,14 @@ class MainActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         binding.rvNowPlaying.apply {
             layoutManager = LinearLayoutManager(
-                this@MainActivity,
+                this@MovieFavoriteActivity,
                 LinearLayoutManager.HORIZONTAL,
                 false
             )
-            adapter = nowPlayingListAdapter
+            adapter = favoriteListAdapter
         }
-        nowPlayingListAdapter.onItemClick = { nowPlaying ->
-            MovieDetailActivity.start(this, nowPlaying)
+        favoriteListAdapter.onItemClick = { favorite ->
+            MovieDetailActivity.start(this, favorite)
         }
     }
 }

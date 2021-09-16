@@ -20,8 +20,8 @@ class MainViewModel(private val getNowPlayingUseCase: GetNowPlayingUseCase) : Vi
         viewModelScope.launch {
             getNowPlayingUseCase()
                 .collect {
-                _nowPlaying.value = ViewState.Success(it)
-            }
+                    _nowPlaying.value = ViewState.Success(it)
+                }
         }
     }
 }

@@ -9,8 +9,8 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
 val databaseModule = module {
-    single { provideDatabase(androidApplication()) }
     single { provideCountriesDao(get()) }
+    single { provideDatabase(androidApplication()) }
 }
 
 fun provideDatabase(application: Application): MovieDatabase {

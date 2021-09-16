@@ -5,6 +5,25 @@ import io.android.core.data.dto.NowPlayingResponse
 import io.android.core.domain.model.NowPlaying
 
 class NowPlayingMapper {
+    fun toEntity(movie: NowPlaying): NowPlayingEntity {
+        return NowPlayingEntity(
+            adult = movie.adult,
+            backdropPath = movie.backdropPath,
+            id = movie.id,
+            originalLanguage = movie.originalLanguage,
+            originalTitle = movie.originalTitle,
+            overview = movie.overview,
+            popularity = movie.popularity,
+            posterPath = movie.posterPath,
+            releaseDate = movie.releaseDate,
+            title = movie.title,
+            video = movie.video,
+            voteAverage = movie.voteAverage,
+            voteCount = movie.voteCount,
+            isFavorite = movie.isFavorite
+        )
+    }
+
     fun toEntity(dto: NowPlayingResponse): List<NowPlayingEntity> {
         return dto.results?.map { result ->
             NowPlayingEntity(
@@ -41,7 +60,8 @@ class NowPlayingMapper {
                 title = result.title,
                 video = result.video,
                 voteAverage = result.voteAverage,
-                voteCount = result.voteCount
+                voteCount = result.voteCount,
+                isFavorite = result.isFavorite
             )
         }
     }

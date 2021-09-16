@@ -33,5 +33,7 @@ data class NowPlayingEntity(
     @ColumnInfo(name = "vote_average")
     val voteAverage: Float,
     @ColumnInfo(name = "vote_count")
-    val voteCount: Int
+    val voteCount: Int,
+    @ColumnInfo(name = "is_favorite")
+    var isFavorite: Boolean = false
 )

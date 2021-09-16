@@ -9,6 +9,7 @@ import io.android.core.domain.repository.MovieRepository
 import io.android.core.vo.Either
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
 class MovieRepositoryImpl(
@@ -38,5 +39,16 @@ class MovieRepositoryImpl(
                 return movieRemoteDataSource.getNowPlaying()
             }
         }.asFlow()
+    }
+
+    override suspend fun getFavoriteMovies(): Flow<List<NowPlaying>> {
+        return flow {
+            val movies = movieLocalDataSource.getFavoriteMovies()
+            nowPlayingMapper.toDomain(movies)
+        }
+    }
+
+    override suspend fun updateFavoriteMovie(movie: NowPlaying, newState: Boolean) {
+        movieLocalDataSource.updateFavoriteMovie(nowPlayingMapper.toEntity(movie), newState)
     }
 }

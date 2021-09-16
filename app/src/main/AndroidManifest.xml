@@ -15,9 +15,6 @@
         android:theme="@style/Theme.Movie">
 
         <activity
-            android:name=".ui.detail.show.ShowDetailActivity"
-            android:label="@string/detail" />
-        <activity
             android:name=".ui.detail.movie.MovieDetailActivity"
             android:label="@string/detail" />
         <activity android:name=".ui.splash.SplashActivity">

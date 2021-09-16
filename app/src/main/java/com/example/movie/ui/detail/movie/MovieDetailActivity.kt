@@ -3,7 +3,9 @@ package com.example.movie.ui.detail.movie
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.movie.R
 import com.example.movie.databinding.ActivityMovieDetailBinding
 import io.android.core.domain.model.NowPlaying
 import io.android.core.util.formatDate
@@ -14,7 +16,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class MovieDetailActivity : AppCompatActivity() {
 
     private val binding by viewBinding(ActivityMovieDetailBinding::inflate)
-    private val vm: MovieDetailViewModel by viewModel()
+    private val vm by viewModel<MovieDetailViewModel>()
 
     companion object {
         private const val INTENT_KEY_NOW_PLAYING = "now-playing"
@@ -35,7 +37,19 @@ class MovieDetailActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
 
         val nowPlaying = intent?.getParcelableExtra<NowPlaying>(INTENT_KEY_NOW_PLAYING)
-        nowPlaying?.let { showMovie(it) }
+        nowPlaying?.let {
+            showMovie(it)
+
+            var isFavorite = it.isFavorite
+            binding.fabFavorite.setOnClickListener {
+                isFavorite = !isFavorite
+                vm.setFavoriteGame(nowPlaying, isFavorite)
+                binding.fabFavorite.text =
+                    if (isFavorite) getString(R.string.remove_from_favorite)
+                    else getString(R.string.add_to_favorite)
+                showFavoriteStatusChangedMessage(isFavorite)
+            }
+        }
     }
 
     private fun showMovie(movie: NowPlaying) {
@@ -47,6 +61,25 @@ class MovieDetailActivity : AppCompatActivity() {
             detailVote.text = movie.voteAverage.toString()
             detailPopularity.text = movie.popularity.toString()
             detailOverview.text = movie.overview
+            fabFavorite.text =
+                if (movie.isFavorite) getString(R.string.remove_from_favorite)
+                else getString(R.string.add_to_favorite)
+        }
+    }
+
+    private fun showFavoriteStatusChangedMessage(favorite: Boolean) {
+        if (favorite) {
+            Toast.makeText(
+                this,
+                getString(R.string.added),
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            Toast.makeText(
+                this,
+                getString(R.string.removed),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }
