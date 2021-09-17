@@ -41,10 +41,13 @@ class MovieRepositoryImpl(
         }.asFlow()
     }
 
-    override suspend fun getFavoriteMovies(): Flow<List<NowPlaying>> {
-        return flow {
-            val movies = movieLocalDataSource.getFavoriteMovies()
-            emit(nowPlayingMapper.toDomain(movies))
+    override suspend fun getFavoriteMovies(): Either<Exception, Flow<List<NowPlaying>>> {
+        return when (val response = movieLocalDataSource.getFavoriteMovies()) {
+            is Either.Success -> {
+                val data = flow { emit(nowPlayingMapper.toDomain(response.data)) }
+                Either.Success(data)
+            }
+            is Either.Failure -> Either.Failure(response.cause)
         }
     }
 

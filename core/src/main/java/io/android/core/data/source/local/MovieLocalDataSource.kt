@@ -1,8 +1,11 @@
 package io.android.core.data.source.local
 
 import io.android.core.data.dto.NowPlayingEntity
+import io.android.core.data.source.DatabaseHandler
+import io.android.core.vo.DataResponse
+import io.android.core.vo.Either
 
-class MovieLocalDataSource(private val movieDao: MovieDao) {
+class MovieLocalDataSource(private val movieDao: MovieDao): DatabaseHandler() {
 
     suspend fun insertNowPlaying(nowPlaying: List<NowPlayingEntity>) {
         movieDao.insertNowPlaying(nowPlaying)
@@ -12,8 +15,11 @@ class MovieLocalDataSource(private val movieDao: MovieDao) {
         return movieDao.getNowPlaying()
     }
 
-    suspend fun getFavoriteMovies(): List<NowPlayingEntity> {
-        return movieDao.getFavoriteMovies()
+    suspend fun getFavoriteMovies(): Either<Exception, List<NowPlayingEntity>> {
+        return when (val response = load { movieDao.getFavoriteMovies() }) {
+            is DataResponse.Success -> Either.Success(response.data)
+            is DataResponse.Failure -> Either.Failure(response.cause)
+        }
     }
 
     suspend fun updateFavoriteMovie(movie: NowPlayingEntity, newState: Boolean) {

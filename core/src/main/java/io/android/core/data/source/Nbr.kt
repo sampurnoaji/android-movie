@@ -23,6 +23,28 @@ abstract class Nbr<ResultType, RequestType> {
         }
     }
 
+//    suspend fun map(): Either<Exception, ResultType> {
+//        when (val dbSource = loadFromDb()) {
+//            is Either.Failure -> return Either.Failure(dbSource.cause)
+//            is Either.Success -> {
+//                return if (shouldFetch(dbSource.data)) {
+//                    when (val result = createCall()) {
+//                        is Either.Failure -> {
+//                            onFetchFailed(result.cause)
+//                            Either.Failure(result.cause, dbSource.data)
+//                        }
+//                        is Either.Success -> {
+//                            saveCallResult(result.data)
+//                            loadFromDb()
+//                        }
+//                    }
+//                } else {
+//                    loadFromDb()
+//                }
+//            }
+//        }
+//    }
+
     @WorkerThread
     protected abstract suspend fun saveCallResult(response: RequestType)
 
