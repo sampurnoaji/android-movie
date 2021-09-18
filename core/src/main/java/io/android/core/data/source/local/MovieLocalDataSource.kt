@@ -11,8 +11,11 @@ class MovieLocalDataSource(private val movieDao: MovieDao): DatabaseHandler() {
         movieDao.insertNowPlaying(nowPlaying)
     }
 
-    suspend fun getNowPlaying(): List<NowPlayingEntity> {
-        return movieDao.getNowPlaying()
+    suspend fun getNowPlaying(): Either<Exception, List<NowPlayingEntity>> {
+        return when (val response = load { movieDao.getNowPlaying() }) {
+            is DataResponse.Success -> Either.Success(response.data)
+            is DataResponse.Failure -> Either.Failure(response.cause)
+        }
     }
 
     suspend fun getFavoriteMovies(): Either<Exception, List<NowPlayingEntity>> {

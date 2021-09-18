@@ -7,10 +7,8 @@ import io.android.core.data.source.remote.MovieRemoteDataSource
 import io.android.core.domain.model.NowPlaying
 import io.android.core.domain.repository.MovieRepository
 import io.android.core.vo.Either
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
 
 class MovieRepositoryImpl(
     private val movieRemoteDataSource: MovieRemoteDataSource,
@@ -18,25 +16,36 @@ class MovieRepositoryImpl(
     private val movieLocalDataSource: MovieLocalDataSource
 ) : MovieRepository {
 
-    override suspend fun getNowPlaying(): Flow<List<NowPlaying>> {
-        return object : Nbr<List<NowPlaying>, NowPlayingResponse>() {
+    override suspend fun getNowPlaying(): Flow<Either<Exception, List<NowPlaying>>> {
+        return object : Nbr<Either<Exception, List<NowPlaying>>, NowPlayingResponse>() {
             override suspend fun saveCallResult(response: NowPlayingResponse) {
                 movieLocalDataSource.insertNowPlaying(nowPlayingMapper.toEntity(response))
             }
 
-            override fun shouldFetch(data: List<NowPlaying>?): Boolean {
-                return data == null || data.isEmpty()
+            override fun shouldFetch(data: Either<Exception, List<NowPlaying>>?): Boolean {
+                return when (data) {
+                    is Either.Success -> data.data.isEmpty()
+                    else -> true
+                }
             }
 
-            override suspend fun loadFromDb(): List<NowPlaying> {
-                return withContext(Dispatchers.IO) {
-                    val result = movieLocalDataSource.getNowPlaying()
-                    nowPlayingMapper.toDomain(result)
+            override suspend fun loadFromDb(): Either<Exception, List<NowPlaying>> {
+                return when (val result = movieLocalDataSource.getNowPlaying()) {
+                    is Either.Success -> Either.Success(nowPlayingMapper.toDomain(result.data))
+                    is Either.Failure -> Either.Failure(result.cause)
                 }
             }
 
             override suspend fun createCall(): Either<Exception, NowPlayingResponse> {
                 return movieRemoteDataSource.getNowPlaying()
+            }
+
+            override fun onFetchFailed(
+                cause: Exception,
+                dbSource: Either<Exception, List<NowPlaying>>
+            ): Either<Exception, List<NowPlaying>> {
+                val data = if (dbSource is Either.Failure) dbSource.data else null
+                return Either.Failure(cause, data)
             }
         }.asFlow()
     }

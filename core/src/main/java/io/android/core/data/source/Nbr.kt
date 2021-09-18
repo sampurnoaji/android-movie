@@ -16,34 +16,14 @@ abstract class Nbr<ResultType, RequestType> {
                     saveCallResult(result.data)
                     emit(loadFromDb())
                 }
-                is Either.Failure -> onFetchFailed(result.cause)
+                is Either.Failure -> {
+                    emit(onFetchFailed(result.cause, dbSource))
+                }
             }
         } else {
             emit(loadFromDb())
         }
     }
-
-//    suspend fun map(): Either<Exception, ResultType> {
-//        when (val dbSource = loadFromDb()) {
-//            is Either.Failure -> return Either.Failure(dbSource.cause)
-//            is Either.Success -> {
-//                return if (shouldFetch(dbSource.data)) {
-//                    when (val result = createCall()) {
-//                        is Either.Failure -> {
-//                            onFetchFailed(result.cause)
-//                            Either.Failure(result.cause, dbSource.data)
-//                        }
-//                        is Either.Success -> {
-//                            saveCallResult(result.data)
-//                            loadFromDb()
-//                        }
-//                    }
-//                } else {
-//                    loadFromDb()
-//                }
-//            }
-//        }
-//    }
 
     @WorkerThread
     protected abstract suspend fun saveCallResult(response: RequestType)
@@ -57,5 +37,5 @@ abstract class Nbr<ResultType, RequestType> {
     @WorkerThread
     protected abstract suspend fun createCall(): Either<Exception, RequestType>
 
-    protected open fun onFetchFailed(cause: Exception) {}
+    protected abstract fun onFetchFailed(cause: Exception, dbSource: ResultType): ResultType
 }
