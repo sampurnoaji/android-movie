@@ -15,4 +15,5 @@
     <string name="removed">Removed</string>
     <string name="remove_from_favorite">Remove from favorite</string>
     <string name="now_playing">Now Playing</string>
+    <string name="empty_data">Empty data</string>
 </resources>

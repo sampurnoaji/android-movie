@@ -6,7 +6,7 @@ import io.android.core.vo.Either
 import kotlinx.coroutines.flow.Flow
 
 class GetFavoriteMoviesUseCase(private val repository: MovieRepository) {
-    suspend operator fun invoke(): Either<Exception, Flow<List<NowPlaying>>> {
+    suspend operator fun invoke(): Flow<Either<Exception, List<NowPlaying>>> {
         return repository.getFavoriteMovies()
     }
 }

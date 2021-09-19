@@ -6,7 +6,10 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import io.android.core.domain.model.NowPlaying
 import io.android.core.domain.usecase.GetFavoriteMoviesUseCase
+import io.android.core.util.onError
+import io.android.core.util.onSuccess
 import io.android.core.vo.ViewState
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MovieFavoriteViewModel(private val getFavoriteMoviesUseCase: GetFavoriteMoviesUseCase) :
@@ -15,16 +18,16 @@ class MovieFavoriteViewModel(private val getFavoriteMoviesUseCase: GetFavoriteMo
     private val _favorites = MutableLiveData<ViewState<List<NowPlaying>>>()
     val favorites = liveData { emitSource(_favorites) }
 
-    fun getNowPlaying() {
+    fun getFavorites() {
         _favorites.value = ViewState.Loading
         viewModelScope.launch {
-//            getFavoriteMoviesUseCase()
-//                .onSuccess { it.collect { data ->
-//                    _favorites.value = ViewState.Success(data)
-//                } }
-//                .onError { cause, data ->
-//                    _favorites.value = ViewState.Error(cause, data)
-//                }
+            getFavoriteMoviesUseCase()
+                .collect { result ->
+                    result.onSuccess { _favorites.value = ViewState.Success(it) }
+                        .onError { cause, data ->
+                            _favorites.value = ViewState.Error(cause, data)
+                        }
+                }
         }
     }
 }

@@ -1,8 +1,10 @@
 package io.android.favorite.ui
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.movie.R
 import com.example.movie.ui.detail.movie.MovieDetailActivity
 import io.android.core.util.gone
 import io.android.core.util.viewBinding
@@ -36,7 +38,7 @@ class MovieFavoriteActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        vm.getNowPlaying()
+        vm.getFavorites()
     }
 
     private fun observeFavoritesResult() {
@@ -47,6 +49,11 @@ class MovieFavoriteActivity : AppCompatActivity() {
                 }
                 is ViewState.Success -> {
                     binding.pgbNowPlaying.gone()
+                    if (it.data.isEmpty()) {
+                        Toast.makeText(this, getString(R.string.empty_data), Toast.LENGTH_SHORT)
+                            .show()
+                        return@observe
+                    }
                     favoriteListAdapter.submitList(it.data)
                 }
                 is ViewState.Error -> {
