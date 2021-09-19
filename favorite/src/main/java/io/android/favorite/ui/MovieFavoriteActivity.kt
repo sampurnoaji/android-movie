@@ -49,12 +49,12 @@ class MovieFavoriteActivity : AppCompatActivity() {
                 }
                 is ViewState.Success -> {
                     binding.pgbNowPlaying.gone()
+                    favoriteListAdapter.submitList(it.data)
                     if (it.data.isEmpty()) {
                         Toast.makeText(this, getString(R.string.empty_data), Toast.LENGTH_SHORT)
                             .show()
                         return@observe
                     }
-                    favoriteListAdapter.submitList(it.data)
                 }
                 is ViewState.Error -> {
                     binding.pgbNowPlaying.gone()
