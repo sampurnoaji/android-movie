@@ -5,72 +5,54 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.movie.R
 import com.example.movie.databinding.ActivityMovieDetailBinding
-import com.example.movie.domain.entity.MovieDetail
-import com.example.movie.utils.formatDate
-import com.example.movie.utils.gone
-import com.example.movie.utils.loadPoster
-import com.example.movie.utils.visible
-import com.example.movie.vo.LoadResult
-import com.google.android.material.snackbar.Snackbar
+import io.android.core.domain.model.NowPlaying
+import io.android.core.util.formatDate
+import io.android.core.util.loadPoster
+import io.android.core.util.viewBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MovieDetailActivity : AppCompatActivity(R.layout.activity_movie_detail) {
+class MovieDetailActivity : AppCompatActivity() {
 
-    private val binding: ActivityMovieDetailBinding by viewBinding()
-    private val vm: MovieDetailViewModel by viewModel()
+    private val binding by viewBinding(ActivityMovieDetailBinding::inflate)
+    private val vm by viewModel<MovieDetailViewModel>()
 
     companion object {
-        const val INTENT_KEY_MOVIE_ID = "movieId"
+        private const val INTENT_KEY_NOW_PLAYING = "now-playing"
 
         @JvmStatic
-        fun start(context: Context, movieId: Int) {
+        fun start(context: Context, nowPlaying: NowPlaying) {
             val starter = Intent(context, MovieDetailActivity::class.java)
-                .putExtra(INTENT_KEY_MOVIE_ID, movieId)
+                .putExtra(INTENT_KEY_NOW_PLAYING, nowPlaying)
             context.startActivity(starter)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
 
-        val movieId = intent.extras?.getInt(INTENT_KEY_MOVIE_ID)
-        movieId?.let {
-            vm.setSelectedMovie(it)
-            vm.getMovieDetail()
-        }
-        observeMovieDetailResult()
+        val nowPlaying = intent?.getParcelableExtra<NowPlaying>(INTENT_KEY_NOW_PLAYING)
+        nowPlaying?.let {
+            showMovie(it)
 
-        binding.fabAddToFavorite.setOnClickListener {
-            vm.insertFavoriteMovie()
-            Snackbar.make(it, getString(R.string.add_movie_to_favorite), Snackbar.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun observeMovieDetailResult() {
-        vm.movieDetailResult.observe(this) {
-            when (it) {
-                is LoadResult.Loading -> binding.progressBar.visible()
-                is LoadResult.Success -> {
-                    binding.progressBar.gone()
-                    populateMovie(it.data)
-                    vm.movieDetail = it.data
-                }
-                is LoadResult.Error -> {
-                    binding.progressBar.gone()
-                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
-                }
+            var isFavorite = it.isFavorite
+            binding.fabFavorite.setOnClickListener {
+                isFavorite = !isFavorite
+                vm.setFavoriteGame(nowPlaying, isFavorite)
+                binding.fabFavorite.text =
+                    if (isFavorite) getString(R.string.remove_from_favorite)
+                    else getString(R.string.add_to_favorite)
+                showFavoriteStatusChangedMessage(isFavorite)
             }
         }
     }
 
-    private fun populateMovie(movie: MovieDetail) {
+    private fun showMovie(movie: NowPlaying) {
         with(binding) {
             detailPoster.loadPoster(movie.posterPath)
             detailTitle.text = movie.title
@@ -79,6 +61,25 @@ class MovieDetailActivity : AppCompatActivity(R.layout.activity_movie_detail) {
             detailVote.text = movie.voteAverage.toString()
             detailPopularity.text = movie.popularity.toString()
             detailOverview.text = movie.overview
+            fabFavorite.text =
+                if (movie.isFavorite) getString(R.string.remove_from_favorite)
+                else getString(R.string.add_to_favorite)
+        }
+    }
+
+    private fun showFavoriteStatusChangedMessage(favorite: Boolean) {
+        if (favorite) {
+            Toast.makeText(
+                this,
+                getString(R.string.added),
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            Toast.makeText(
+                this,
+                getString(R.string.removed),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }

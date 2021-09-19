@@ -2,20 +2,15 @@ package com.example.movie.data.source
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.DataSource
-import com.example.movie.data.mapper.EntityMapper
-import com.example.movie.data.mapper.ResponseMapper
-import com.example.movie.data.source.local.LocalDataSource
 import com.example.movie.data.source.local.entity.FavoriteMovieEntity
 import com.example.movie.data.source.local.entity.FavoriteShowEntity
 import com.example.movie.data.source.local.entity.MovieEntity
 import com.example.movie.data.source.local.entity.ShowEntity
-import com.example.movie.data.source.remote.RemoteDataSource
-import com.example.movie.utils.AppExecutors
 import com.example.movie.utils.DummyData
 import com.example.movie.utils.MainCoroutineRule
 import com.example.movie.utils.PagedListUtil
-import com.example.movie.utils.database.SortUtil
-import com.example.movie.vo.Resource
+import io.android.core.data.source.MovieRepositoryImpl
+import io.android.core.data.source.local.MovieLocalDataSource
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,7 +33,7 @@ class MovieRepositoryImplTest {
     private lateinit var repository: MovieRepositoryImpl
 
     private val remoteDataSource = mock<RemoteDataSource>()
-    private val localDataSource = mock<LocalDataSource>()
+    private val localDataSource = mock<MovieLocalDataSource>()
     private val appExecutors = mock<AppExecutors>()
     private val entityMapper = mock<EntityMapper>()
     private val responseMapper = mock<ResponseMapper>()
